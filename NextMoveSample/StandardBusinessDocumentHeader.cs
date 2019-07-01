@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 
 using System.Xml.Serialization;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace NextMove.Lib
@@ -36,8 +37,9 @@ namespace NextMove.Lib
         private System.DateTime expectedResponseDateTimeField;
     
         private bool expectedResponseDateTimeFieldSpecified;
-    
+
         /// <remarks/>
+        [JsonProperty("requestingDocumentCreationDateTime")]
         public System.DateTime RequestingDocumentCreationDateTime {
             get {
                 return this.requestingDocumentCreationDateTimeField;
@@ -49,6 +51,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlIgnore()]
+        [JsonProperty("requestingDocumentCreationDateTimeSpecified")]
         public bool RequestingDocumentCreationDateTimeSpecified {
             get {
                 return this.requestingDocumentCreationDateTimeFieldSpecified;
@@ -57,8 +60,9 @@ namespace NextMove.Lib
                 this.requestingDocumentCreationDateTimeFieldSpecified = value;
             }
         }
-    
+
         /// <remarks/>
+        [JsonProperty("requestingDocumentInstanceIdentifier")]
         public string RequestingDocumentInstanceIdentifier {
             get {
                 return this.requestingDocumentInstanceIdentifierField;
@@ -67,8 +71,9 @@ namespace NextMove.Lib
                 this.requestingDocumentInstanceIdentifierField = value;
             }
         }
-    
+
         /// <remarks/>
+        [JsonProperty("expectedResponseDateTime")]
         public System.DateTime ExpectedResponseDateTime {
             get {
                 return this.expectedResponseDateTimeField;
@@ -105,8 +110,9 @@ namespace NextMove.Lib
         private string identifierField;
     
         private object[] scopeInformationField;
-    
+
         /// <remarks/>
+        [JsonProperty("type")]
         public string Type {
             get {
                 return this.typeField;
@@ -115,8 +121,9 @@ namespace NextMove.Lib
                 this.typeField = value;
             }
         }
-    
+
         /// <remarks/>
+        [JsonProperty("instanceIdentifier")]
         public string InstanceIdentifier {
             get {
                 return this.instanceIdentifierField;
@@ -125,8 +132,9 @@ namespace NextMove.Lib
                 this.instanceIdentifierField = value;
             }
         }
-    
+
         /// <remarks/>
+        [JsonProperty("identifier")]
         public string Identifier {
             get {
                 return this.identifierField;
@@ -138,6 +146,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlElement("ScopeInformation")]
+        [JsonProperty("scopeInformation")]
         public CorrelationInformation[] ScopeInformation {
             get
             {
@@ -164,8 +173,9 @@ namespace NextMove.Lib
         private string descriptionField;
     
         private string languageCodeField;
-    
+
         /// <remarks/>
+        [JsonProperty("mimeTypeQualifierCode")]
         public string MimeTypeQualifierCode {
             get {
                 return this.mimeTypeQualifierCodeField;
@@ -177,6 +187,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlElement(DataType="anyURI")]
+        [JsonProperty("uniformResourceIdentifier")]
         public string UniformResourceIdentifier {
             get {
                 return this.uniformResourceIdentifierField;
@@ -185,8 +196,9 @@ namespace NextMove.Lib
                 this.uniformResourceIdentifierField = value;
             }
         }
-    
+
         /// <remarks/>
+        [JsonProperty("description")]
         public string Description {
             get {
                 return this.descriptionField;
@@ -195,8 +207,9 @@ namespace NextMove.Lib
                 this.descriptionField = value;
             }
         }
-    
+
         /// <remarks/>
+        [JsonProperty("languageCode")]
         public string LanguageCode {
             get {
                 return this.languageCodeField;
@@ -221,6 +234,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlElement(DataType="integer")]
+        [JsonProperty("numberOfItems")]
         public string NumberOfItems {
             get {
                 return this.numberOfItemsField;
@@ -232,6 +246,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlElement("ManifestItem")]
+        [JsonProperty("manifestItem")]
         public ManifestItem[] ManifestItem {
             get {
                 return this.manifestItemField;
@@ -263,8 +278,9 @@ namespace NextMove.Lib
         private bool multipleTypeFieldSpecified;
     
         private System.DateTime creationDateAndTimeField;
-    
+
         /// <remarks/>
+        [JsonProperty("standard")]
         public string Standard {
             get {
                 return this.standardField;
@@ -273,8 +289,9 @@ namespace NextMove.Lib
                 this.standardField = value;
             }
         }
-    
+
         /// <remarks/>
+        [JsonProperty("typeVersion")]
         public string TypeVersion {
             get {
                 return this.typeVersionField;
@@ -283,8 +300,9 @@ namespace NextMove.Lib
                 this.typeVersionField = value;
             }
         }
-    
+
         /// <remarks/>
+        [JsonProperty("instanceIdentifier")]
         public string InstanceIdentifier {
             get {
                 return this.instanceIdentifierField;
@@ -293,8 +311,9 @@ namespace NextMove.Lib
                 this.instanceIdentifierField = value;
             }
         }
-    
+
         /// <remarks/>
+        [JsonProperty("type")]
         public string Type {
             get {
                 return this.typeField;
@@ -303,8 +322,9 @@ namespace NextMove.Lib
                 this.typeField = value;
             }
         }
-    
+
         /// <remarks/>
+        [JsonProperty("multipleType")]
         public bool MultipleType {
             get {
                 return this.multipleTypeField;
@@ -324,8 +344,9 @@ namespace NextMove.Lib
                 this.multipleTypeFieldSpecified = value;
             }
         }
-    
+
         /// <remarks/>
+        [JsonProperty("creationDateAndTime")]
         public System.DateTime CreationDateAndTime {
             get {
                 return this.creationDateAndTimeField;
@@ -353,8 +374,9 @@ namespace NextMove.Lib
         private string telephoneNumberField;
     
         private string contactTypeIdentifierField;
-    
+
         /// <remarks/>
+        [JsonProperty("contact")]
         public string Contact {
             get {
                 return this.contactField;
@@ -363,8 +385,9 @@ namespace NextMove.Lib
                 this.contactField = value;
             }
         }
-    
+
         /// <remarks/>
+        [JsonProperty("emailAddress")]
         public string EmailAddress {
             get {
                 return this.emailAddressField;
@@ -373,8 +396,9 @@ namespace NextMove.Lib
                 this.emailAddressField = value;
             }
         }
-    
+
         /// <remarks/>
+        [JsonProperty("faxNumber")]
         public string FaxNumber {
             get {
                 return this.faxNumberField;
@@ -383,8 +407,9 @@ namespace NextMove.Lib
                 this.faxNumberField = value;
             }
         }
-    
+
         /// <remarks/>
+        [JsonProperty("telephoneNumber")]
         public string TelephoneNumber {
             get {
                 return this.telephoneNumberField;
@@ -393,8 +418,9 @@ namespace NextMove.Lib
                 this.telephoneNumberField = value;
             }
         }
-    
+
         /// <remarks/>
+        [JsonProperty("contactTypeIdentifier")]
         public string ContactTypeIdentifier {
             get {
                 return this.contactTypeIdentifierField;
@@ -419,6 +445,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlAttribute()]
+        [JsonProperty("authority")]
         public string Authority {
             get {
                 return this.authorityField;
@@ -430,6 +457,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlText()]
+        [JsonProperty("value")]
         public string Value {
             get {
                 return this.valueField;
@@ -451,8 +479,9 @@ namespace NextMove.Lib
         private PartnerIdentification identifierField;
     
         private ContactInformation[] contactInformationField;
-    
+
         /// <remarks/>
+        [JsonProperty("identifier")]
         public PartnerIdentification Identifier {
             get {
                 return this.identifierField;
@@ -464,6 +493,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlElement("ContactInformation")]
+        [JsonProperty("contactInformation")]
         public ContactInformation[] ContactInformation {
             get {
                 return this.contactInformationField;
@@ -506,6 +536,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlAttribute()]
+        [JsonProperty("typeOfServiceTransaction")]
         public TypeOfServiceTransaction TypeOfServiceTransaction {
             get {
                 return this.typeOfServiceTransactionField;
@@ -517,6 +548,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlIgnore()]
+        
         public bool TypeOfServiceTransactionSpecified {
             get {
                 return this.typeOfServiceTransactionFieldSpecified;
@@ -528,6 +560,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlAttribute()]
+        [JsonProperty("isNonRepudiationRequired")]
         public string IsNonRepudiationRequired {
             get {
                 return this.isNonRepudiationRequiredField;
@@ -539,6 +572,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlAttribute()]
+        [JsonProperty("isAuthenticationRequired")]
         public string IsAuthenticationRequired {
             get {
                 return this.isAuthenticationRequiredField;
@@ -550,6 +584,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlAttribute()]
+        [JsonProperty("isNonRepudiationOfReceiptRequired")]
         public string IsNonRepudiationOfReceiptRequired {
             get {
                 return this.isNonRepudiationOfReceiptRequiredField;
@@ -561,6 +596,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlAttribute()]
+        [JsonProperty("isIntelligibleCheckRequired")]
         public string IsIntelligibleCheckRequired {
             get {
                 return this.isIntelligibleCheckRequiredField;
@@ -572,6 +608,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlAttribute()]
+        [JsonProperty("isApplicationErrorResponseRequested")]
         public string IsApplicationErrorResponseRequested {
             get {
                 return this.isApplicationErrorResponseRequestedField;
@@ -583,6 +620,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlAttribute()]
+        [JsonProperty("timeToAcknowledgeReceipt")]
         public string TimeToAcknowledgeReceipt {
             get {
                 return this.timeToAcknowledgeReceiptField;
@@ -594,6 +632,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlAttribute()]
+        [JsonProperty("timeToAcknowledgeAcceptance")]
         public string TimeToAcknowledgeAcceptance {
             get {
                 return this.timeToAcknowledgeAcceptanceField;
@@ -605,6 +644,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlAttribute()]
+        [JsonProperty("timeToPerform")]
         public string TimeToPerform {
             get {
                 return this.timeToPerformField;
@@ -616,6 +656,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlAttribute()]
+        [JsonProperty("recurrence")]
         public string Recurrence {
             get {
                 return this.recurrenceField;
@@ -651,8 +692,9 @@ namespace NextMove.Lib
         private string businessServiceNameField;
     
         private ServiceTransaction serviceTransactionField;
-    
+
         /// <remarks/>
+        [JsonProperty("businessServiceName")]
         public string BusinessServiceName {
             get {
                 return this.businessServiceNameField;
@@ -661,8 +703,9 @@ namespace NextMove.Lib
                 this.businessServiceNameField = value;
             }
         }
-    
+
         /// <remarks/>
+        [JsonProperty("serviceTransaction")]
         public ServiceTransaction ServiceTransaction {
             get {
                 return this.serviceTransactionField;
@@ -693,8 +736,9 @@ namespace NextMove.Lib
         private Manifest manifestField;
     
         private Scope[] businessScopeField;
-    
+
         /// <remarks/>
+        [JsonProperty("headerVersion")]
         public string HeaderVersion {
             get {
                 return this.headerVersionField;
@@ -706,6 +750,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlElement("Sender")]
+        [JsonProperty("sender")]
         public Partner[] Sender {
             get {
                 return this.senderField;
@@ -717,6 +762,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlElement("Receiver")]
+        [JsonProperty("receiver")]
         public Partner[] Receiver {
             get {
                 return this.receiverField;
@@ -727,6 +773,7 @@ namespace NextMove.Lib
         }
     
         /// <remarks/>
+        [JsonProperty("documentIdentification")]
         public DocumentIdentification DocumentIdentification {
             get {
                 return this.documentIdentificationField;
@@ -735,8 +782,9 @@ namespace NextMove.Lib
                 this.documentIdentificationField = value;
             }
         }
-    
+
         /// <remarks/>
+        [JsonProperty("manifest")]
         public Manifest Manifest {
             get {
                 return this.manifestField;
@@ -748,6 +796,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlArrayItem(IsNullable=false)]
+        [JsonProperty("businessScope")]
         public Scope[] BusinessScope {
             get {
                 return this.businessScopeField;
@@ -765,13 +814,15 @@ namespace NextMove.Lib
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [XmlType(Namespace="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader")]
     [XmlRoot(Namespace="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader", IsNullable=false)]
+    //[JsonConverter(typeof(JsonCustomSerializer))]
     public partial class StandardBusinessDocument {
     
         private StandardBusinessDocumentHeader standardBusinessDocumentHeaderField;
     
         private System.Xml.XmlElement anyField;
-    
+
         /// <remarks/>
+        [JsonProperty("standardBusinessDocumentHeader")]
         public StandardBusinessDocumentHeader StandardBusinessDocumentHeader {
             get {
                 return this.standardBusinessDocumentHeaderField;
