@@ -9,8 +9,8 @@ namespace NextMove.Lib
     public class DpiDigitalBusinessMessage: DpiDigitalBusinessMessageCore
     {
 
-        [XmlElement("aapningskvittering")]
-        public bool ReceiptOnOpening { get; set; }
+        [XmlElement("varsler")]
+        public Notification Notification { get; set; }
 
     }
 }

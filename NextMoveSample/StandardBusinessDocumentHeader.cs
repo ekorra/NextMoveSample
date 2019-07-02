@@ -8,6 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -737,7 +738,7 @@ namespace NextMove.Lib
         private DocumentIdentification documentIdentificationField;
     
         private Manifest manifestField;
-    
+
         private Scope[] businessScopeField;
 
         /// <remarks/>
@@ -796,20 +797,31 @@ namespace NextMove.Lib
                 this.manifestField = value;
             }
         }
+
+        [JsonProperty("businessScope")]
+        public BusinessScope BusinessScope { get; set; }
+
+       
     
         /// <remarks/>
-        [XmlArrayItem(IsNullable=false)]
+        //[XmlArrayItem(IsNullable=false)]
         
-        [JsonProperty("businessScope", NullValueHandling = NullValueHandling.Ignore)]
-        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
-        public Scope[] BusinessScope {
-            get {
-                return this.businessScopeField;
-            }
-            set {
-                this.businessScopeField = value;
-            }
-        }
+        //[JsonProperty("businessScope", NullValueHandling = NullValueHandling.Ignore)]
+        //[JsonConverter(typeof(SingleOrArrayConverter<string>))]
+        //public Scope[] BusinessScope {
+        //    get {
+        //        return this.businessScopeField;
+        //    }
+        //    set {
+        //        this.businessScopeField = value;
+        //    }
+        //}
+    }
+
+    public partial class BusinessScope
+    {
+        [JsonProperty("scope")]
+        public List<Scope> Scope { get; set; }
     }
 
     /// <remarks/>

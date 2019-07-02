@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace NextMove.Lib
 {
@@ -21,16 +23,22 @@ namespace NextMove.Lib
 
     public class DigitalPostInfo
     {
-        [XmlElement("varsler")]
-        public Notification Notification { get; set; }
+        [XmlElement("aapningskvittering")]
+        public bool ReceiptOnOpening { get; set; }
 
-        [XmlIgnore]
+        //[XmlIgnore]
+        [XmlElement("virkningsdatoish")]
+        [JsonProperty("virkningsdatoish")]
         public DateTime EffectiveDateTime { get ; set; }
 
         [XmlElement("virkningsdato")]
-        public String EffectiveDate
+        [JsonProperty("virkningsdato")]
+        public string EffectiveDate
         {
-            get { return EffectiveDateTime.Date.ToShortDateString(); }
+            get { return EffectiveDateTime.Date.ToString("yyyy-MM-dd");
+        }
+            //HACK: temporary to make json serialization work
+            set => throw new NotImplementedException();
         }
     }
 }

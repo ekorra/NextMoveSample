@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.WebSockets;
 using System.Runtime.Serialization;
 using System.Xml;
@@ -39,25 +40,10 @@ namespace NextMove.Lib
                 }
             }
         }
-        public string ToJson2()
-        {
-            var xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(ToXml());
-            return JsonConvert.SerializeXmlNode(xmlDoc);
-
-        }
-
-       
         
         public string ToJson()
         {
-
-            return JsonConvert.SerializeObject(this,
-
-                     Formatting.Indented,
-                     new JsonCustomSerializer());
-
-
+            return JsonConvert.SerializeObject(this, Formatting.Indented, new JsonCustomSerializer()); 
         }
 
         public static StandardBusinessDocument ParseJson(string json)
@@ -98,7 +84,7 @@ namespace NextMove.Lib
                 Sender = new[] {GetPartner( sbdAddressInfo.SenderOrganisationNumber.ToString())},
                 Receiver = new[] {GetPartner(sbdAddressInfo.ReceiverOrganisationNumber.ToString())},
                 DocumentIdentification = GetDocumentIdentification(sbdAddressInfo),
-                BusinessScope = GetBusniessScopes()
+                BusinessScope = new BusinessScope { Scope = GetBusniessScopes(sbdAddressInfo)}
             };
 
            
@@ -114,7 +100,7 @@ namespace NextMove.Lib
                 Identifier = new PartnerIdentification
                 {
                     Authority = "iso6523-actorid-upis",
-                    Value = $"0192:{id}"
+                    Value =id
                 }
             };
             return  partner;
@@ -132,7 +118,7 @@ namespace NextMove.Lib
             };
         }
 
-        private Scope[] GetBusniessScopes()
+        private List<Scope> GetBusniessScopes(SbdAddressInfo sbdAddressInfo)
         {
             
             var scopes = new List<Scope>
@@ -141,7 +127,7 @@ namespace NextMove.Lib
                 {
                     Type = "ConversationId",
                     InstanceIdentifier = "6d0ec155-b4f7-43c3-908e-211d68c9cf09",
-                    Identifier = "urn:no:difi:sdp:1.0",
+                    Identifier = sbdAddressInfo.ProcessId,
                     ScopeInformation = new[]
                         {new CorrelationInformation {ExpectedResponseDateTime = DateTime.Now.AddHours(1)}}
                 },
@@ -160,7 +146,7 @@ namespace NextMove.Lib
             };
 
 
-            return scopes.ToArray();
+            return scopes;
         }
     }
 //}

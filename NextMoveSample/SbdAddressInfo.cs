@@ -4,8 +4,8 @@ namespace NextMove.Lib
 {
     public class SbdAddressInfo
     {
-        public int SenderOrganisationNumber { get; }
-        public long ReceiverOrganisationNumber { get; }
+        public string SenderOrganisationNumber { get; }
+        public string ReceiverOrganisationNumber { get; }
         public string ProcessId { get; }
         public string DocumenttypeId { get; }
 
@@ -15,7 +15,7 @@ namespace NextMove.Lib
         }
 
 
-        public SbdAddressInfo(int sender, long receiver, string processId, string documentId)
+        public SbdAddressInfo(string sender, string receiver, string processId, string documentId)
         {
             SenderOrganisationNumber = IsValidSenderId(sender) ? sender : ThrowArgumentException(sender); 
             ReceiverOrganisationNumber = IsValidReceiverId(receiver) ? receiver : ThrowArgumentException(receiver);
@@ -28,14 +28,35 @@ namespace NextMove.Lib
             throw new ArgumentException($"{s} is not a valid value for {nameof(s)}: ");
         }
 
-        private static bool IsValidReceiverId(long receiverId)
+        private static bool IsValidReceiverId(string receiverId)
         {
-            return receiverId.ToString().Length >= 9 && receiverId.ToString().Length <= 11;
+            
+            if (receiverId.Contains(':'))
+            {
+                receiverId = receiverId.Split(':')[1];
+                if (receiverId.Length > 9)
+                    return false;
+            }
+
+            if (!long.TryParse(receiverId, out long n))
+                return false;
+
+            return receiverId.Length >= 9 && receiverId.Length <= 11;
         }
 
-        private static bool IsValidSenderId(int receiverId)
+        private static bool IsValidSenderId(string receiverId)
         {
-            return receiverId.ToString().Length == 9;
+            
+            if (receiverId.Contains(':'))
+            {
+                receiverId = receiverId.Split(':')[1];
+            }
+
+            if (!int.TryParse(receiverId, out int n))
+                return false;
+
+                
+            return receiverId.Length == 9;
         }
 
         private static bool IsValidProcessId(string prosessId)

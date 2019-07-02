@@ -15,7 +15,7 @@ namespace NextMoveSample.console
         {
             Console.WriteLine("Hello World!");
 
-            var digitalSbd = GetDpiDigitalMessageSbd(910076787, 06068700602);
+            var digitalSbd = GetDpiDigitalMessageSbd("0192:910076787", "06068700602");
             //var json = digitalSbd.ToJson2();
             //var xml = digitalSbd.ToXml();
             //await SaveToFile(json, @"C:\temp\nextmove\digital.json");
@@ -62,7 +62,7 @@ namespace NextMoveSample.console
             }
         }
 
-        private static StandardBusinessDocument GetDpiDigitalDpvMessage(int senderId, long receiverId)
+        private static StandardBusinessDocument GetDpiDigitalDpvMessage(string senderId, string receiverId)
         {
             var dpiDigitalDpvBusinessMessage = new DpiDigitalDpvBusinessMessage
             {
@@ -78,7 +78,7 @@ namespace NextMoveSample.console
             return new StandardBusinessDocument(new SbdAddressInfo(senderId, receiverId, "urn:no:difi:profile:digitalpost:info:ver1.0", "urn:no:difi:digitalpost:xsd:digital::digital_dpv"), dpiDigitalDpvBusinessMessage);
         }
 
-        private static StandardBusinessDocument GetDpiPrintMessage(int senderId, long receiverId)
+        private static StandardBusinessDocument GetDpiPrintMessage(string senderId, string receiverId)
         {
             var receiver = new Receiver
             {
@@ -112,30 +112,33 @@ namespace NextMoveSample.console
             return sbd;
         }
 
-        private static StandardBusinessDocument GetDpiDigitalMessageSbd(int senderId, long receiverId)
+        private static StandardBusinessDocument GetDpiDigitalMessageSbd(string senderId, string receiverId)
         {
             var dpiDigitalMessage = new DpiDigitalBusinessMessage
             {
                 
                 Language = "NO",
                 Title = "tittel",
-                ReceiptOnOpening = false,
+                
                 SecurityLevel = 3,
                 PrimaryDocumentName = "test.pdf",
                 DigitalPostInfo = new DigitalPostInfo
                 {
+                    ReceiptOnOpening = false,
                     EffectiveDateTime = DateTime.Now.AddDays(1),
-                    Notification = new Notification
-                    {
-                        EmailText = "ePost varsel", SmsText = "SMS varsel" 
+                },
+                Notification = new Notification
+                {
+                    EmailText = "ePost varsel",
+                    SmsText = "SMS varsel"
 
-                    }
                 }
+
             };
 
 
             var sbd = new StandardBusinessDocument(
-                new SbdAddressInfo(senderId, receiverId, "urn:no:difi:profile:digitalpost:vedtak:ver1.0",
+                new SbdAddressInfo(senderId, receiverId, "urn:no:difi:profile:digitalpost:info:ver1.0",
                     "urn:no:difi:digitalpost:xsd:digital::digital"), dpiDigitalMessage);
             return sbd;
         }

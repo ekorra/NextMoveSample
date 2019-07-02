@@ -36,11 +36,10 @@ namespace NextMove.Lib
         {
             var content = new MultipartFormDataContent();
 
-            Debug.Write(sbd.ToJson2());
-
-            content.Add(new StringContent(sbd.ToJson2().ToLower()), "sbd");
-            content.Add(new StreamContent(File.OpenRead(filename)), "Test", "Test.jpg");
+            Debug.Write(sbd.ToJson());
             
+            content.Add(new StringContent(sbd.ToJson()), "sbd");
+            content.Add(new StreamContent(File.OpenRead(filename)), "test.pdf", "test.pdf");
 
             var result = await httpClient.PostAsync("/api/messages/out/multipart", content);
             result.EnsureSuccessStatusCode();
@@ -50,7 +49,7 @@ namespace NextMove.Lib
 
         public async Task<string> SendLargeMessage(StandardBusinessDocument sbd, string contentPath)
         {
-            var result = await httpClient.PostAsync("/api/messages/out", new StringContent(sbd.ToJson2()));
+            var result = await httpClient.PostAsync("/api/messages/out", new StringContent(sbd.ToJson()));
             //var conversationId = sbd.StandardBusinessDocumentHeader.DocumentIdentification.
 
             return "";

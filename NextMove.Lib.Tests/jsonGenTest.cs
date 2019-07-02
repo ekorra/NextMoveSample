@@ -29,18 +29,18 @@ namespace NextMove.Lib.Tests
 
                 Language = "NO",
                 Title = "tittel",
-                ReceiptOnOpening = false,
+                
                 SecurityLevel = 3,
                 PrimaryDocumentName = "test.pdf",
                 DigitalPostInfo = new DigitalPostInfo
                 {
                     EffectiveDateTime = DateTime.Now.AddDays(1),
-                    Notification = new Notification
-                    {
-                        EmailText = "ePost varsel",
-                        SmsText = "SMS varsel"
-
-                    }
+                    ReceiptOnOpening = false
+                },
+                Notification = new Notification
+                {
+                    EmailText = "ePost varsel",
+                    SmsText = "SMS varsel"
                 }
             };
             return dpiDigitalMessage;
