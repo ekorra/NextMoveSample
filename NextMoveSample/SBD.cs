@@ -47,15 +47,17 @@ namespace NextMove.Lib
 
         }
 
+       
         
         public string ToJson()
         {
+
             return JsonConvert.SerializeObject(this,
-                new JsonSerializerSettings
-                {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                    Formatting = Formatting.Indented
-                });
+
+                     Formatting.Indented,
+                     new JsonCustomSerializer());
+
+
         }
 
         public static StandardBusinessDocument ParseJson(string json)
@@ -85,20 +87,28 @@ namespace NextMove.Lib
 
         private StandardBusinessDocumentHeader GetStandardBusinessDocumentHeader(SbdAddressInfo sbdAddressInfo)
         {
+            List<Scope> s = new List<Scope>();
+            var scope = new Scope();
+
+            s.Add(new Scope());
+
             var sbdh = new StandardBusinessDocumentHeader
             {
                 HeaderVersion = "1.0",
                 Sender = new[] {GetPartner( sbdAddressInfo.SenderOrganisationNumber.ToString())},
                 Receiver = new[] {GetPartner(sbdAddressInfo.ReceiverOrganisationNumber.ToString())},
-                DocumentIdentification = GetDocumentIdentification(""),
+                DocumentIdentification = GetDocumentIdentification(sbdAddressInfo),
                 BusinessScope = GetBusniessScopes()
             };
+
+           
 
             return sbdh;
         }
 
         private Partner GetPartner(string id)
         {
+            var p = new Partner[1];
             var partner = new Partner
             {
                 Identifier = new PartnerIdentification
@@ -107,24 +117,25 @@ namespace NextMove.Lib
                     Value = $"0192:{id}"
                 }
             };
-            return partner;
+            return  partner;
         }
 
-        private DocumentIdentification GetDocumentIdentification(string documentType)
+        private DocumentIdentification GetDocumentIdentification(SbdAddressInfo sbdAddressInfo)
         {
             return new DocumentIdentification
             {
-                Standard = documentType,
+                Standard = sbdAddressInfo.DocumenttypeId,
                 CreationDateAndTime = DateTime.Now,
                 TypeVersion = "2.0",
                 InstanceIdentifier = Guid.NewGuid().ToString(),
-                Type = "forretningsMelding"
+                Type = sbdAddressInfo.ForettningsmeldingType
             };
         }
 
         private Scope[] GetBusniessScopes()
         {
-            var scopesx = new List<Scope>
+            
+            var scopes = new List<Scope>
             {
                 new Scope
                 {
@@ -137,16 +148,19 @@ namespace NextMove.Lib
                 new Scope
                 {
                     Type = "SenderRef",
-                    Identifier = Guid.NewGuid().ToString()
+                    InstanceIdentifier = Guid.NewGuid().ToString(),
+                    Identifier = "AvsenderSystem"
                 },
                 new Scope
                 {
                     Type = "ReceiverRef",
-                    InstanceIdentifier = Guid.NewGuid().ToString()
+                    InstanceIdentifier = Guid.NewGuid().ToString(),
+                    Identifier = "MottakerSystem"
                 }
             };
 
-            return scopesx.ToArray();
+
+            return scopes.ToArray();
         }
     }
 //}

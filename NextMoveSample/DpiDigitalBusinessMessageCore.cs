@@ -7,16 +7,30 @@ namespace NextMove.Lib
 {
     public abstract class DpiDigitalBusinessMessageCore: BusinessMessageCore
     {
-        [XmlElement("ikkeSensitivTittel")]
+        [XmlElement("tittel")]
         public string Title { get; set; }
 
         [XmlElement("spraak")]
         public string Language { get; set; }
 
+        [XmlElement("digitalPostInfo")]
+        public DigitalPostInfo DigitalPostInfo { get; set; }
+
+
+    }
+
+    public class DigitalPostInfo
+    {
         [XmlElement("varsler")]
         public Notification Notification { get; set; }
 
+        [XmlIgnore]
+        public DateTime EffectiveDateTime { get ; set; }
+
         [XmlElement("virkningsdato")]
-        public DateTime EffectiveDate { get; set; }
+        public String EffectiveDate
+        {
+            get { return EffectiveDateTime.Date.ToShortDateString(); }
+        }
     }
 }

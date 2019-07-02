@@ -16,10 +16,10 @@ namespace NextMoveSample.console
             Console.WriteLine("Hello World!");
 
             var digitalSbd = GetDpiDigitalMessageSbd(910076787, 06068700602);
-            var json = digitalSbd.ToJson2();
-            var xml = digitalSbd.ToXml();
-            await SaveToFile(json, @"C:\temp\nextmove\digital.json");
-            await SaveToFile(xml, @"C:\temp\nextmove\digital.xml");
+            //var json = digitalSbd.ToJson2();
+            //var xml = digitalSbd.ToXml();
+            //await SaveToFile(json, @"C:\temp\nextmove\digital.json");
+            //await SaveToFile(xml, @"C:\temp\nextmove\digital.xml");
             //var json = System.IO.File.ReadAllText(@"c:\temp\jsonNoCase.json");
             //var parsedJson = StandardBusinessDocument.ParseJson(json);
             //var json1 = System.IO.File.ReadAllText(@"c:\temp\jsonNoCaseNoAny.json");
@@ -32,11 +32,17 @@ namespace NextMoveSample.console
 
             var httpClient  = new HttpClient();
             var nextMoveClient = new NextMoveClient(httpClient);
-            string result;
+            //string result;
+
+            //if (!await nextMoveClient.IsIpRunning())
+            //{
+            //    return;
+            //}
 
             try
             {
-                result = await nextMoveClient.SendSmallMessage(digitalSbd, @"C:\temp\nextmove\Test.pdf");
+                var d = digitalSbd.ToJson();
+                var result = await nextMoveClient.SendSmallMessage(digitalSbd, @"C:\temp\nextmove\Test.pdf");
             }
             catch (Exception e)
             {
@@ -44,6 +50,8 @@ namespace NextMoveSample.console
                 throw;
             }
         }
+
+        
         
 
         private static async Task SaveToFile(string content, string filename)
@@ -61,10 +69,10 @@ namespace NextMoveSample.console
                 Title = "test tittel",
                 Body = "Body",
                 Summary = "Summary",
-                EffectiveDate = DateTime.Now,
                 Language = "NO",
                 SecurityLevel = 3,
-                PrimaryDocumentName = "Test.pdf"
+                PrimaryDocumentName = "Test.pdf",
+                DigitalPostInfo = new DigitalPostInfo { EffectiveDateTime = DateTime.Now}
             };
 
             return new StandardBusinessDocument(new SbdAddressInfo(senderId, receiverId, "urn:no:difi:profile:digitalpost:info:ver1.0", "urn:no:difi:digitalpost:xsd:digital::digital_dpv"), dpiDigitalDpvBusinessMessage);
@@ -108,13 +116,21 @@ namespace NextMoveSample.console
         {
             var dpiDigitalMessage = new DpiDigitalBusinessMessage
             {
-                EffectiveDate = DateTime.Now.AddDays(1),
+                
                 Language = "NO",
                 Title = "tittel",
-                Notification = new Notification {EmailText = "ePost varsel", SmsText = "SMS varsel"},
                 ReceiptOnOpening = false,
                 SecurityLevel = 3,
-                PrimaryDocumentName = "Test.pdf"
+                PrimaryDocumentName = "test.pdf",
+                DigitalPostInfo = new DigitalPostInfo
+                {
+                    EffectiveDateTime = DateTime.Now.AddDays(1),
+                    Notification = new Notification
+                    {
+                        EmailText = "ePost varsel", SmsText = "SMS varsel" 
+
+                    }
+                }
             };
 
 

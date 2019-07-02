@@ -22,7 +22,7 @@ namespace NextMove.Lib
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
     [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    //[System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [XmlType(Namespace="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader")]
     [XmlRoot(Namespace="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader", IsNullable=false)]
@@ -39,7 +39,7 @@ namespace NextMove.Lib
         private bool expectedResponseDateTimeFieldSpecified;
 
         /// <remarks/>
-        [JsonProperty("requestingDocumentCreationDateTime")]
+        [JsonProperty("requestingDocumentCreationDateTime", NullValueHandling = NullValueHandling.Ignore)]
         public System.DateTime RequestingDocumentCreationDateTime {
             get {
                 return this.requestingDocumentCreationDateTimeField;
@@ -50,8 +50,9 @@ namespace NextMove.Lib
         }
     
         /// <remarks/>
-        [XmlIgnore()]
-        [JsonProperty("requestingDocumentCreationDateTimeSpecified")]
+        //[XmlIgnore()]
+        //[JsonIgnore]
+        [JsonProperty("requestingDocumentCreationDateTimeSpecified", NullValueHandling = NullValueHandling.Ignore)]
         public bool RequestingDocumentCreationDateTimeSpecified {
             get {
                 return this.requestingDocumentCreationDateTimeFieldSpecified;
@@ -62,7 +63,7 @@ namespace NextMove.Lib
         }
 
         /// <remarks/>
-        [JsonProperty("requestingDocumentInstanceIdentifier")]
+        [JsonProperty("requestingDocumentInstanceIdentifier", NullValueHandling = NullValueHandling.Ignore)]
         public string RequestingDocumentInstanceIdentifier {
             get {
                 return this.requestingDocumentInstanceIdentifierField;
@@ -84,7 +85,8 @@ namespace NextMove.Lib
         }
     
         /// <remarks/>
-        [XmlIgnore()]
+        //[XmlIgnore()]
+        //[JsonIgnore]
         public bool ExpectedResponseDateTimeSpecified {
             get {
                 return this.expectedResponseDateTimeFieldSpecified;
@@ -98,7 +100,7 @@ namespace NextMove.Lib
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
     [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    //[System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [XmlType(Namespace="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader")]
     public partial class Scope {
@@ -112,7 +114,7 @@ namespace NextMove.Lib
         private object[] scopeInformationField;
 
         /// <remarks/>
-        [JsonProperty("type")]
+        [JsonProperty("type", NullValueHandling = NullValueHandling.Ignore)]
         public string Type {
             get {
                 return this.typeField;
@@ -123,7 +125,7 @@ namespace NextMove.Lib
         }
 
         /// <remarks/>
-        [JsonProperty("instanceIdentifier")]
+        [JsonProperty("instanceIdentifier", NullValueHandling = NullValueHandling.Ignore)]
         public string InstanceIdentifier {
             get {
                 return this.instanceIdentifierField;
@@ -134,7 +136,7 @@ namespace NextMove.Lib
         }
 
         /// <remarks/>
-        [JsonProperty("identifier")]
+        [JsonProperty("identifier", NullValueHandling = NullValueHandling.Ignore)]
         public string Identifier {
             get {
                 return this.identifierField;
@@ -146,7 +148,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlElement("ScopeInformation")]
-        [JsonProperty("scopeInformation")]
+        [JsonProperty("scopeInformation", NullValueHandling = NullValueHandling.Ignore)]
         public CorrelationInformation[] ScopeInformation {
             get
             {
@@ -187,7 +189,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlElement(DataType="anyURI")]
-        [JsonProperty("uniformResourceIdentifier")]
+        [JsonProperty("uniformResourceIdentifier", NullValueHandling = NullValueHandling.Ignore)]
         public string UniformResourceIdentifier {
             get {
                 return this.uniformResourceIdentifierField;
@@ -198,7 +200,7 @@ namespace NextMove.Lib
         }
 
         /// <remarks/>
-        [JsonProperty("description")]
+        [JsonProperty("description", NullValueHandling = NullValueHandling.Ignore)]
         public string Description {
             get {
                 return this.descriptionField;
@@ -209,7 +211,7 @@ namespace NextMove.Lib
         }
 
         /// <remarks/>
-        [JsonProperty("languageCode")]
+        [JsonProperty("languageCode", NullValueHandling = NullValueHandling.Ignore)]
         public string LanguageCode {
             get {
                 return this.languageCodeField;
@@ -234,7 +236,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlElement(DataType="integer")]
-        [JsonProperty("numberOfItems")]
+        [JsonProperty("numberOfItems", NullValueHandling = NullValueHandling.Ignore)]
         public string NumberOfItems {
             get {
                 return this.numberOfItemsField;
@@ -246,7 +248,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlElement("ManifestItem")]
-        [JsonProperty("manifestItem")]
+        [JsonProperty("manifestItem", NullValueHandling = NullValueHandling.Ignore)]
         public ManifestItem[] ManifestItem {
             get {
                 return this.manifestItemField;
@@ -280,7 +282,7 @@ namespace NextMove.Lib
         private System.DateTime creationDateAndTimeField;
 
         /// <remarks/>
-        [JsonProperty("standard")]
+        [JsonProperty("standard", NullValueHandling = NullValueHandling.Ignore)]
         public string Standard {
             get {
                 return this.standardField;
@@ -291,7 +293,7 @@ namespace NextMove.Lib
         }
 
         /// <remarks/>
-        [JsonProperty("typeVersion")]
+        [JsonProperty("typeVersion", NullValueHandling = NullValueHandling.Ignore)]
         public string TypeVersion {
             get {
                 return this.typeVersionField;
@@ -302,7 +304,7 @@ namespace NextMove.Lib
         }
 
         /// <remarks/>
-        [JsonProperty("instanceIdentifier")]
+        [JsonProperty("instanceIdentifier", NullValueHandling = NullValueHandling.Ignore)]
         public string InstanceIdentifier {
             get {
                 return this.instanceIdentifierField;
@@ -313,7 +315,7 @@ namespace NextMove.Lib
         }
 
         /// <remarks/>
-        [JsonProperty("type")]
+        [JsonProperty("type", NullValueHandling = NullValueHandling.Ignore)]
         public string Type {
             get {
                 return this.typeField;
@@ -324,7 +326,7 @@ namespace NextMove.Lib
         }
 
         /// <remarks/>
-        [JsonProperty("multipleType")]
+        [JsonProperty("multipleType", NullValueHandling = NullValueHandling.Ignore)]
         public bool MultipleType {
             get {
                 return this.multipleTypeField;
@@ -336,6 +338,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlIgnore()]
+        [JsonIgnore]
         public bool MultipleTypeSpecified {
             get {
                 return this.multipleTypeFieldSpecified;
@@ -346,7 +349,7 @@ namespace NextMove.Lib
         }
 
         /// <remarks/>
-        [JsonProperty("creationDateAndTime")]
+        [JsonProperty("creationDateAndTime", NullValueHandling = NullValueHandling.Ignore)]
         public System.DateTime CreationDateAndTime {
             get {
                 return this.creationDateAndTimeField;
@@ -376,7 +379,7 @@ namespace NextMove.Lib
         private string contactTypeIdentifierField;
 
         /// <remarks/>
-        [JsonProperty("contact")]
+        [JsonProperty("contact", NullValueHandling = NullValueHandling.Ignore)]
         public string Contact {
             get {
                 return this.contactField;
@@ -387,7 +390,7 @@ namespace NextMove.Lib
         }
 
         /// <remarks/>
-        [JsonProperty("emailAddress")]
+        [JsonProperty("emailAddress", NullValueHandling = NullValueHandling.Ignore)]
         public string EmailAddress {
             get {
                 return this.emailAddressField;
@@ -398,7 +401,7 @@ namespace NextMove.Lib
         }
 
         /// <remarks/>
-        [JsonProperty("faxNumber")]
+        [JsonProperty("faxNumber", NullValueHandling = NullValueHandling.Ignore)]
         public string FaxNumber {
             get {
                 return this.faxNumberField;
@@ -409,7 +412,7 @@ namespace NextMove.Lib
         }
 
         /// <remarks/>
-        [JsonProperty("telephoneNumber")]
+        [JsonProperty("telephoneNumber", NullValueHandling = NullValueHandling.Ignore)]
         public string TelephoneNumber {
             get {
                 return this.telephoneNumberField;
@@ -420,7 +423,7 @@ namespace NextMove.Lib
         }
 
         /// <remarks/>
-        [JsonProperty("contactTypeIdentifier")]
+        [JsonProperty("contactTypeIdentifier", NullValueHandling = NullValueHandling.Ignore)]
         public string ContactTypeIdentifier {
             get {
                 return this.contactTypeIdentifierField;
@@ -445,7 +448,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlAttribute()]
-        [JsonProperty("authority")]
+        [JsonProperty("authority", NullValueHandling = NullValueHandling.Ignore)]
         public string Authority {
             get {
                 return this.authorityField;
@@ -457,7 +460,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlText()]
-        [JsonProperty("value")]
+        [JsonProperty("value", NullValueHandling = NullValueHandling.Ignore)]
         public string Value {
             get {
                 return this.valueField;
@@ -481,7 +484,7 @@ namespace NextMove.Lib
         private ContactInformation[] contactInformationField;
 
         /// <remarks/>
-        [JsonProperty("identifier")]
+        [JsonProperty("identifier", NullValueHandling = NullValueHandling.Ignore)]
         public PartnerIdentification Identifier {
             get {
                 return this.identifierField;
@@ -493,7 +496,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlElement("ContactInformation")]
-        [JsonProperty("contactInformation")]
+        [JsonProperty("contactInformation", NullValueHandling = NullValueHandling.Ignore)]
         public ContactInformation[] ContactInformation {
             get {
                 return this.contactInformationField;
@@ -536,7 +539,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlAttribute()]
-        [JsonProperty("typeOfServiceTransaction")]
+        [JsonProperty("typeOfServiceTransaction", NullValueHandling = NullValueHandling.Ignore)]
         public TypeOfServiceTransaction TypeOfServiceTransaction {
             get {
                 return this.typeOfServiceTransactionField;
@@ -548,7 +551,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlIgnore()]
-        
+        [JsonIgnore]
         public bool TypeOfServiceTransactionSpecified {
             get {
                 return this.typeOfServiceTransactionFieldSpecified;
@@ -560,7 +563,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlAttribute()]
-        [JsonProperty("isNonRepudiationRequired")]
+        [JsonProperty("isNonRepudiationRequired", NullValueHandling = NullValueHandling.Ignore)]
         public string IsNonRepudiationRequired {
             get {
                 return this.isNonRepudiationRequiredField;
@@ -572,7 +575,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlAttribute()]
-        [JsonProperty("isAuthenticationRequired")]
+        [JsonProperty("isAuthenticationRequired", NullValueHandling = NullValueHandling.Ignore)]
         public string IsAuthenticationRequired {
             get {
                 return this.isAuthenticationRequiredField;
@@ -584,7 +587,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlAttribute()]
-        [JsonProperty("isNonRepudiationOfReceiptRequired")]
+        [JsonProperty("isNonRepudiationOfReceiptRequired", NullValueHandling = NullValueHandling.Ignore)]
         public string IsNonRepudiationOfReceiptRequired {
             get {
                 return this.isNonRepudiationOfReceiptRequiredField;
@@ -596,7 +599,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlAttribute()]
-        [JsonProperty("isIntelligibleCheckRequired")]
+        [JsonProperty("isIntelligibleCheckRequired", NullValueHandling = NullValueHandling.Ignore)]
         public string IsIntelligibleCheckRequired {
             get {
                 return this.isIntelligibleCheckRequiredField;
@@ -608,7 +611,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlAttribute()]
-        [JsonProperty("isApplicationErrorResponseRequested")]
+        [JsonProperty("isApplicationErrorResponseRequested", NullValueHandling = NullValueHandling.Ignore)]
         public string IsApplicationErrorResponseRequested {
             get {
                 return this.isApplicationErrorResponseRequestedField;
@@ -620,7 +623,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlAttribute()]
-        [JsonProperty("timeToAcknowledgeReceipt")]
+        [JsonProperty("timeToAcknowledgeReceipt", NullValueHandling = NullValueHandling.Ignore)]
         public string TimeToAcknowledgeReceipt {
             get {
                 return this.timeToAcknowledgeReceiptField;
@@ -632,7 +635,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlAttribute()]
-        [JsonProperty("timeToAcknowledgeAcceptance")]
+        [JsonProperty("timeToAcknowledgeAcceptance", NullValueHandling = NullValueHandling.Ignore)]
         public string TimeToAcknowledgeAcceptance {
             get {
                 return this.timeToAcknowledgeAcceptanceField;
@@ -644,7 +647,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlAttribute()]
-        [JsonProperty("timeToPerform")]
+        [JsonProperty("timeToPerform", NullValueHandling = NullValueHandling.Ignore)]
         public string TimeToPerform {
             get {
                 return this.timeToPerformField;
@@ -656,7 +659,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlAttribute()]
-        [JsonProperty("recurrence")]
+        [JsonProperty("recurrence", NullValueHandling = NullValueHandling.Ignore)]
         public string Recurrence {
             get {
                 return this.recurrenceField;
@@ -694,7 +697,7 @@ namespace NextMove.Lib
         private ServiceTransaction serviceTransactionField;
 
         /// <remarks/>
-        [JsonProperty("businessServiceName")]
+        [JsonProperty("businessServiceName", NullValueHandling = NullValueHandling.Ignore)]
         public string BusinessServiceName {
             get {
                 return this.businessServiceNameField;
@@ -705,7 +708,7 @@ namespace NextMove.Lib
         }
 
         /// <remarks/>
-        [JsonProperty("serviceTransaction")]
+        [JsonProperty("serviceTransaction", NullValueHandling = NullValueHandling.Ignore)]
         public ServiceTransaction ServiceTransaction {
             get {
                 return this.serviceTransactionField;
@@ -738,7 +741,7 @@ namespace NextMove.Lib
         private Scope[] businessScopeField;
 
         /// <remarks/>
-        [JsonProperty("headerVersion")]
+        [JsonProperty("headerVersion", NullValueHandling = NullValueHandling.Ignore)]
         public string HeaderVersion {
             get {
                 return this.headerVersionField;
@@ -750,7 +753,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlElement("Sender")]
-        [JsonProperty("sender")]
+        [JsonProperty("sender", NullValueHandling = NullValueHandling.Ignore)]
         public Partner[] Sender {
             get {
                 return this.senderField;
@@ -762,7 +765,7 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlElement("Receiver")]
-        [JsonProperty("receiver")]
+        [JsonProperty("receiver", NullValueHandling = NullValueHandling.Ignore)]
         public Partner[] Receiver {
             get {
                 return this.receiverField;
@@ -773,7 +776,7 @@ namespace NextMove.Lib
         }
     
         /// <remarks/>
-        [JsonProperty("documentIdentification")]
+        [JsonProperty("documentIdentification", NullValueHandling = NullValueHandling.Ignore)]
         public DocumentIdentification DocumentIdentification {
             get {
                 return this.documentIdentificationField;
@@ -784,7 +787,7 @@ namespace NextMove.Lib
         }
 
         /// <remarks/>
-        [JsonProperty("manifest")]
+        [JsonProperty("manifest", NullValueHandling = NullValueHandling.Ignore)]
         public Manifest Manifest {
             get {
                 return this.manifestField;
@@ -796,7 +799,9 @@ namespace NextMove.Lib
     
         /// <remarks/>
         [XmlArrayItem(IsNullable=false)]
-        [JsonProperty("businessScope")]
+        
+        [JsonProperty("businessScope", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public Scope[] BusinessScope {
             get {
                 return this.businessScopeField;
@@ -814,7 +819,6 @@ namespace NextMove.Lib
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [XmlType(Namespace="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader")]
     [XmlRoot(Namespace="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader", IsNullable=false)]
-    //[JsonConverter(typeof(JsonCustomSerializer))]
     public partial class StandardBusinessDocument {
     
         private StandardBusinessDocumentHeader standardBusinessDocumentHeaderField;
@@ -822,7 +826,7 @@ namespace NextMove.Lib
         private System.Xml.XmlElement anyField;
 
         /// <remarks/>
-        [JsonProperty("standardBusinessDocumentHeader")]
+        [JsonProperty("standardBusinessDocumentHeader", NullValueHandling = NullValueHandling.Ignore)]
         public StandardBusinessDocumentHeader StandardBusinessDocumentHeader {
             get {
                 return this.standardBusinessDocumentHeaderField;
