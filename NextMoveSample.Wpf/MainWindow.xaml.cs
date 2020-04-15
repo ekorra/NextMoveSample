@@ -99,7 +99,6 @@ namespace NextMoveSample.Wpf
         private void InitSelectedFiles()
         {
             SelectedFiles = new ObservableCollection<FileInfo>();
-            //SelectedFiles.Add("Espen");
         }
 
         private void InitSentAndReceivedMessages()
@@ -177,7 +176,7 @@ namespace NextMoveSample.Wpf
 
         private async void SendButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var enveliope = new EnvelopeInfo(SenderId, RecevierId, "urn:no:difi:profile:arkivmelding:helseSosialOgOmsorg:ver1.0", "urn:no:difi:arkivmelding:xsd::arkivmelding")
+            var envelope = new EnvelopeInfo(SenderId, RecevierId, "urn:no:difi:profile:arkivmelding:helseSosialOgOmsorg:ver1.0", "urn:no:difi:arkivmelding:xsd::arkivmelding")
             {
                 ConversationId = Guid.NewGuid().ToString(),
                 MessageId = Guid.NewGuid().ToString()
@@ -186,10 +185,7 @@ namespace NextMoveSample.Wpf
             {
                 PrimaryDocumentName = "arkivmelding.xml", SecurityLevel = SelectedSecurityLevel
             };
-
-
-
-            var result = await nextMoveClient.SendMessage(enveliope, businessMessage, SelectedFiles);
+            var result = await nextMoveClient.SendMessage(envelope, businessMessage, SelectedFiles);
 
         }
 

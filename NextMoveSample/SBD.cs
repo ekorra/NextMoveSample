@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net.WebSockets;
 using System.Runtime.Serialization;
 using System.Xml;
-using System.Xml.Linq;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json.Linq;
 using Formatting = Newtonsoft.Json.Formatting;
 
 namespace NextMove.Lib
@@ -24,23 +21,24 @@ namespace NextMove.Lib
 
         public StandardBusinessDocument()
         {
-            
+            additionalData = new Dictionary<string, JToken>();
         }
-    
-        public string ToXml()
+
+        [JsonExtensionData]
+        private IDictionary<string, JToken> additionalData;
+
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context)
         {
-            
-            var xmlSerializer = new XmlSerializer(typeof(StandardBusinessDocument));
-            using (var stringWriter = new StringWriter())
+            //arkivmelding is not deserialized to the correct type correctly
+            if(additionalData.ContainsKey("arkivmelding"))
             {
-                using (var xmlWriter = XmlWriter.Create(stringWriter))
-                {
-                    xmlSerializer.Serialize(xmlWriter, this);
-                    return stringWriter.ToString(); 
-                }
+               
+                Any = SerializeToXmlElement(additionalData["arkivmelding"].ToObject<DpoBusinessMessage>());
             }
         }
-        
+
         public string ToJson()
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented, new JsonCustomSerializer()); 
@@ -49,6 +47,19 @@ namespace NextMove.Lib
         public static StandardBusinessDocument ParseJson(string json)
         {
             return JsonConvert.DeserializeObject<StandardBusinessDocument>(json);
+        }
+
+        public string ToXml()
+        {
+            var xmlSerializer = new XmlSerializer(typeof(StandardBusinessDocument));
+            using (var stringWriter = new StringWriter())
+            {
+                using (var xmlWriter = XmlWriter.Create(stringWriter))
+                {
+                    xmlSerializer.Serialize(xmlWriter, this);
+                    return stringWriter.ToString();
+                }
+            }
         }
 
         public static StandardBusinessDocument ParseXml(string xml)
@@ -60,7 +71,7 @@ namespace NextMove.Lib
             }
         }
 
-        private static XmlElement SerializeToXmlElement(object o)
+        internal static XmlElement SerializeToXmlElement(object o)
         {
             var xmlDocument = new XmlDocument();
             using (var xmlWriter = xmlDocument.CreateNavigator().AppendChild())
@@ -73,28 +84,21 @@ namespace NextMove.Lib
 
         private StandardBusinessDocumentHeader GetStandardBusinessDocumentHeader(EnvelopeInfo envelopeInfo)
         {
-            List<Scope> s = new List<Scope>();
-            var scope = new Scope();
 
-            s.Add(new Scope());
-
-            var sbdh = new StandardBusinessDocumentHeader
+            var standardBusinessDocumentHeader = new StandardBusinessDocumentHeader
             {
                 HeaderVersion = "1.0",
-                Sender = new[] {GetPartner( envelopeInfo.SenderOrganisationNumber.ToString())},
-                Receiver = new[] {GetPartner(envelopeInfo.ReceiverOrganisationNumber.ToString())},
+                Sender = new[] {GetPartner( envelopeInfo.SenderOrganisationNumber)},
+                Receiver = new[] {GetPartner(envelopeInfo.ReceiverOrganisationNumber)},
                 DocumentIdentification = GetDocumentIdentification(envelopeInfo),
                 BusinessScope = new BusinessScope { Scope = GetBusniessScopes(envelopeInfo)}
             };
 
-           
-
-            return sbdh;
+            return standardBusinessDocumentHeader;
         }
 
         private Partner GetPartner(string id)
         {
-            var p = new Partner[1];
             var partner = new Partner
             {
                 Identifier = new PartnerIdentification
@@ -125,16 +129,20 @@ namespace NextMove.Lib
 
         private List<Scope> GetBusniessScopes(EnvelopeInfo envelopeInfo)
         {
-            var scopes = new List<Scope>();
-
-            scopes.Add(new Scope
+            var scopes = new List<Scope>
             {
-                Type = "ConversationId",
-                InstanceIdentifier = envelopeInfo.ConversationId.ToString(),
-                Identifier = envelopeInfo.ProcessId,
-                ScopeInformation = new[]
-                    {new CorrelationInformation {ExpectedResponseDateTime = DateTime.Now.AddHours(1)}}
-            });
+                new Scope
+                {
+                    Type = "ConversationId",
+                    InstanceIdentifier = envelopeInfo.ConversationId,
+                    Identifier = envelopeInfo.ProcessId,
+                    ScopeInformation = new[]
+                    {
+                        new CorrelationInformation {ExpectedResponseDateTime = DateTime.Now.AddHours(1)}
+                    }
+                }
+            };
+
 
             if (!string.IsNullOrEmpty(envelopeInfo.SenderRef))
             {
@@ -159,5 +167,4 @@ namespace NextMove.Lib
             return scopes;
         }
     }
-//}
 }

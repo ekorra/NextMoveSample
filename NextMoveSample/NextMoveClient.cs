@@ -50,14 +50,6 @@ namespace NextMove.Lib
         }
 
 
-        public async Task<string> SendLargeMessage(StandardBusinessDocument sbd, string contentPath)
-        {
-            var result = await httpClient.PostAsync("/api/messages/out", new StringContent(sbd.ToJson(), Encoding.UTF8, mediaType: "application/json"));
-            //var conversationId = sbd.StandardBusinessDocumentHeader.DocumentIdentification.
-
-            return "";
-        }
-
         public async Task<bool> SendMessage(EnvelopeInfo envelopeInfo, BusinessMessageCore businessMessage,  IEnumerable<FileInfo> files)
         {
             if (!string.IsNullOrEmpty(envelopeInfo.MessageId))
@@ -71,9 +63,7 @@ namespace NextMove.Lib
 
             }
             var sbd = new StandardBusinessDocument(envelopeInfo, businessMessage );
-
-            var jsbd = sbd.ToJson();
-           
+            
             var httpResponseMessage = await httpClient.PostAsync("/api/messages/out", new StringContent(sbd.ToJson(), Encoding.UTF8, mediaType: "application/json"));
             
             if (!httpResponseMessage.IsSuccessStatusCode)
