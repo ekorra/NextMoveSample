@@ -29,15 +29,7 @@ namespace NextMove.Lib
         [JsonProperty("documentTypes")]
         public DocumentType[] DocumentTypes { get; set; }
 
-        public string PrettyProcessName
-        {
-            get
-            {
-                //urn: no: difi: profile: arkivmelding: planByggOgGeodata: ver1.0
-
-                return Process.Split(':')[5];
-            }
-        }
+        public string PrettyProcessName => Process.Split(':')[5];
     }
 
     public partial class DocumentType
@@ -51,25 +43,8 @@ namespace NextMove.Lib
 
     public partial class Capabilities
     {
-        public static Capabilities FromJson(string json) => JsonConvert.DeserializeObject<Capabilities>(json, QuickType.Converter.Settings);
+        public static Capabilities FromJson(string json) => JsonConvert.DeserializeObject<Capabilities>(json);
     }
 
-    public static class Serialize
-    {
-        public static string ToJson(this Capabilities self) => JsonConvert.SerializeObject(self, QuickType.Converter.Settings);
-    }
-
-    internal static class Converter
-    {
-        public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
-        {
-            MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
-            DateParseHandling = DateParseHandling.None,
-            Converters =
-            {
-                new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.AssumeUniversal }
-            },
-        };
-    }
 
 }
