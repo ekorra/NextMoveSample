@@ -2,12 +2,19 @@
 
 namespace NextMove.Lib
 {
-    public class SbdAddressInfo
+    public class EnvelopeInfo
     {
         public string SenderOrganisationNumber { get; }
         public string ReceiverOrganisationNumber { get; }
         public string ProcessId { get; }
         public string DocumenttypeId { get; }
+
+        public string ConversationId { get; set; }
+        public string MessageId { get; set; }
+        public string SendignSystem { get; set; }
+        public string SenderRef { get; set; }
+        public string ReceivinSystem { get; set; }
+        public string ReceiverRef { get; set; }
 
         public string ForettningsmeldingType
         {
@@ -15,7 +22,7 @@ namespace NextMove.Lib
         }
 
 
-        public SbdAddressInfo(string sender, string receiver, string processId, string documentId)
+        public EnvelopeInfo(string sender, string receiver, string processId, string documentId)
         {
             SenderOrganisationNumber = IsValidSenderId(sender) ? sender : ThrowArgumentException(sender); 
             ReceiverOrganisationNumber = IsValidReceiverId(receiver) ? receiver : ThrowArgumentException(receiver);

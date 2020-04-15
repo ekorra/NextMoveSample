@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using HeyRed.Mime;
 using Newtonsoft.Json.Linq;
 
 namespace NextMove.Lib
@@ -47,12 +49,74 @@ namespace NextMove.Lib
             return "";
         }
 
+
         public async Task<string> SendLargeMessage(StandardBusinessDocument sbd, string contentPath)
         {
-            var result = await httpClient.PostAsync("/api/messages/out", new StringContent(sbd.ToJson()));
+            var result = await httpClient.PostAsync("/api/messages/out", new StringContent(sbd.ToJson(), Encoding.UTF8, mediaType: "application/json"));
             //var conversationId = sbd.StandardBusinessDocumentHeader.DocumentIdentification.
 
             return "";
+        }
+
+        public async Task<bool> SendMessage(EnvelopeInfo envelopeInfo, BusinessMessageCore businessMessage,  IEnumerable<FileInfo> files)
+        {
+            if (!string.IsNullOrEmpty(envelopeInfo.MessageId))
+            {
+                envelopeInfo.MessageId = Guid.NewGuid().ToString();
+            }
+
+            if (string.IsNullOrEmpty(envelopeInfo.ConversationId))
+            {
+                envelopeInfo.ConversationId = Guid.NewGuid().ToString();
+
+            }
+            var sbd = new StandardBusinessDocument(envelopeInfo, businessMessage );
+
+            var jsbd = sbd.ToJson();
+           
+            var httpResponseMessage = await httpClient.PostAsync("/api/messages/out", new StringContent(sbd.ToJson(), Encoding.UTF8, mediaType: "application/json"));
+            
+            if (!httpResponseMessage.IsSuccessStatusCode)
+            {
+                return false;
+            }
+
+            foreach (var file in files)
+            {
+                httpResponseMessage = null;
+                var content = new StreamContent(file.OpenRead());
+                content.Headers.ContentType = new MediaTypeHeaderValue(MimeTypesMap.GetMimeType(file.Name));
+                content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+                {
+                    Name = Path.GetFileNameWithoutExtension(file.Name),
+                    FileName = file.Name
+                };
+                httpResponseMessage = await httpClient.PutAsync($"/api/messages/out/{envelopeInfo.MessageId}", content);
+                if (!httpResponseMessage.IsSuccessStatusCode)
+                {
+                    return false;
+                }
+            }
+
+            httpResponseMessage = null;
+            httpResponseMessage = await httpClient.PostAsync($"/api/messages/out/{envelopeInfo.MessageId}", new StringContent(""));
+            if (!httpResponseMessage.IsSuccessStatusCode)
+            {
+                return false;
+            }
+
+
+            return true;
+        }
+
+        public async Task<Capabilities> GetCapabilities(string orgnr)
+        {
+            var result = await httpClient.GetAsync($"/api/capabilities/{orgnr}");
+            if (!result.IsSuccessStatusCode) throw new Exception($"Failed getting capabilities:  {result.StatusCode}");
+
+            var capabilities = Capabilities.FromJson(await result.Content.ReadAsStringAsync());
+
+            return capabilities;
         }
     }
 

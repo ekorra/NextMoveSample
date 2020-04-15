@@ -16,9 +16,9 @@ namespace NextMove.Lib
     public partial class StandardBusinessDocument
     {
 
-        public StandardBusinessDocument(SbdAddressInfo sbdAddressInfo, BusinessMessageCore businessMessageCore)
+        public StandardBusinessDocument(EnvelopeInfo envelopeInfo, BusinessMessageCore businessMessageCore)
         {
-            StandardBusinessDocumentHeader = GetStandardBusinessDocumentHeader(sbdAddressInfo);
+            StandardBusinessDocumentHeader = GetStandardBusinessDocumentHeader(envelopeInfo);
             Any = SerializeToXmlElement(businessMessageCore);
         }
 
@@ -71,7 +71,7 @@ namespace NextMove.Lib
         }
 
 
-        private StandardBusinessDocumentHeader GetStandardBusinessDocumentHeader(SbdAddressInfo sbdAddressInfo)
+        private StandardBusinessDocumentHeader GetStandardBusinessDocumentHeader(EnvelopeInfo envelopeInfo)
         {
             List<Scope> s = new List<Scope>();
             var scope = new Scope();
@@ -81,10 +81,10 @@ namespace NextMove.Lib
             var sbdh = new StandardBusinessDocumentHeader
             {
                 HeaderVersion = "1.0",
-                Sender = new[] {GetPartner( sbdAddressInfo.SenderOrganisationNumber.ToString())},
-                Receiver = new[] {GetPartner(sbdAddressInfo.ReceiverOrganisationNumber.ToString())},
-                DocumentIdentification = GetDocumentIdentification(sbdAddressInfo),
-                BusinessScope = new BusinessScope { Scope = GetBusniessScopes(sbdAddressInfo)}
+                Sender = new[] {GetPartner( envelopeInfo.SenderOrganisationNumber.ToString())},
+                Receiver = new[] {GetPartner(envelopeInfo.ReceiverOrganisationNumber.ToString())},
+                DocumentIdentification = GetDocumentIdentification(envelopeInfo),
+                BusinessScope = new BusinessScope { Scope = GetBusniessScopes(envelopeInfo)}
             };
 
            
@@ -100,51 +100,61 @@ namespace NextMove.Lib
                 Identifier = new PartnerIdentification
                 {
                     Authority = "iso6523-actorid-upis",
-                    Value =id
+                    Value =$"0192:{id}"
                 }
             };
             return  partner;
         }
 
-        private DocumentIdentification GetDocumentIdentification(SbdAddressInfo sbdAddressInfo)
+        private DocumentIdentification GetDocumentIdentification(EnvelopeInfo envelopeInfo)
         {
-            return new DocumentIdentification
+            var documentIdentification =  new DocumentIdentification
             {
-                Standard = sbdAddressInfo.DocumenttypeId,
+                Standard = envelopeInfo.DocumenttypeId,
                 CreationDateAndTime = DateTime.Now,
                 TypeVersion = "2.0",
-                InstanceIdentifier = Guid.NewGuid().ToString(),
-                Type = sbdAddressInfo.ForettningsmeldingType
+                Type = envelopeInfo.ForettningsmeldingType
             };
+            if (!string.IsNullOrEmpty(envelopeInfo.MessageId))
+            {
+                documentIdentification.InstanceIdentifier = envelopeInfo.MessageId;
+            }
+
+            return documentIdentification;
         }
 
-        private List<Scope> GetBusniessScopes(SbdAddressInfo sbdAddressInfo)
+        private List<Scope> GetBusniessScopes(EnvelopeInfo envelopeInfo)
         {
-            
-            var scopes = new List<Scope>
+            var scopes = new List<Scope>();
+
+            scopes.Add(new Scope
             {
-                new Scope
-                {
-                    Type = "ConversationId",
-                    InstanceIdentifier = "6d0ec155-b4f7-43c3-908e-211d68c9cf09",
-                    Identifier = sbdAddressInfo.ProcessId,
-                    ScopeInformation = new[]
-                        {new CorrelationInformation {ExpectedResponseDateTime = DateTime.Now.AddHours(1)}}
-                },
-                new Scope
+                Type = "ConversationId",
+                InstanceIdentifier = envelopeInfo.ConversationId.ToString(),
+                Identifier = envelopeInfo.ProcessId,
+                ScopeInformation = new[]
+                    {new CorrelationInformation {ExpectedResponseDateTime = DateTime.Now.AddHours(1)}}
+            });
+
+            if (!string.IsNullOrEmpty(envelopeInfo.SenderRef))
+            {
+                scopes.Add(new Scope
                 {
                     Type = "SenderRef",
-                    InstanceIdentifier = Guid.NewGuid().ToString(),
-                    Identifier = "AvsenderSystem"
-                },
-                new Scope
+                    InstanceIdentifier = envelopeInfo.SenderRef,
+                    Identifier = envelopeInfo.SendignSystem
+                });
+            }
+
+            if (!string.IsNullOrEmpty(envelopeInfo.ReceiverRef ))
+            {
+                scopes.Add(new Scope
                 {
                     Type = "ReceiverRef",
-                    InstanceIdentifier = Guid.NewGuid().ToString(),
-                    Identifier = "MottakerSystem"
-                }
-            };
-
+                    InstanceIdentifier = envelopeInfo.ReceiverRef,
+                    Identifier = envelopeInfo.ReceivinSystem
+                });
+            }
 
             return scopes;
         }

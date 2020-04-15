@@ -75,7 +75,7 @@ namespace NextMoveSample.console
                 DigitalPostInfo = new DigitalPostInfo { EffectiveDateTime = DateTime.Now}
             };
 
-            return new StandardBusinessDocument(new SbdAddressInfo(senderId, receiverId, "urn:no:difi:profile:digitalpost:info:ver1.0", "urn:no:difi:digitalpost:xsd:digital::digital_dpv"), dpiDigitalDpvBusinessMessage);
+            return new StandardBusinessDocument(new EnvelopeInfo(senderId, receiverId, "urn:no:difi:profile:digitalpost:info:ver1.0", "urn:no:difi:digitalpost:xsd:digital::digital_dpv"), dpiDigitalDpvBusinessMessage);
         }
 
         private static StandardBusinessDocument GetDpiPrintMessage(string senderId, string receiverId)
@@ -107,7 +107,7 @@ namespace NextMoveSample.console
             };
 
             var sbd = new StandardBusinessDocument(
-                new SbdAddressInfo(senderId, receiverId, "urn:no:difi:profile:digitalpost:vedtak:ver1.0",
+                new EnvelopeInfo(senderId, receiverId, "urn:no:difi:profile:digitalpost:vedtak:ver1.0",
                     "urn:no:difi:digitalpost:xsd:fysisk::print"), dpiPrintBusinessMessage);
             return sbd;
         }
@@ -136,10 +136,12 @@ namespace NextMoveSample.console
 
             };
 
+            var envelope = new EnvelopeInfo(senderId, receiverId, "urn:no:difi:profile:digitalpost:info:ver1.0",
+                "urn:no:difi:digitalpost:xsd:digital::digital");
+            //var sbd = new StandardBusinessDocument();
+           // sbd.StandardBusinessDocumentHeader = 
 
-            var sbd = new StandardBusinessDocument(
-                new SbdAddressInfo(senderId, receiverId, "urn:no:difi:profile:digitalpost:info:ver1.0",
-                    "urn:no:difi:digitalpost:xsd:digital::digital"), dpiDigitalMessage);
+            var sbd = new StandardBusinessDocument(envelope, dpiDigitalMessage);
             return sbd;
         }
     }

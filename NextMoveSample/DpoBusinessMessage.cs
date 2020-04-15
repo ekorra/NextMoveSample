@@ -1,8 +1,9 @@
 ﻿using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace NextMove.Lib
 {
-    [DataContract(Name = "arkivmelding")]
+    [XmlRoot( "arkivmelding")]
     public class DpoBusinessMessage: BusinessMessageCore
     {
     }

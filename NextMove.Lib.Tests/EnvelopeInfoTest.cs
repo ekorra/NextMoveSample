@@ -13,9 +13,9 @@ namespace NextMove.Lib.Tests
         public void ReturnForettningsmeldingString()
         {
             string forettningsmeldingType = "arkivmelding";
-            SbdAddressInfo sbdAddressInfo = new SbdAddressInfo(validOrgNr,
+            EnvelopeInfo envelopeInfo = new EnvelopeInfo(validOrgNr,
                 validOrgNr, validProcessId, validDocumentId);
-            var result = sbdAddressInfo.ForettningsmeldingType;
+            var result = envelopeInfo.ForettningsmeldingType;
 
             Assert.True(result==forettningsmeldingType);
         }
@@ -34,9 +34,9 @@ namespace NextMove.Lib.Tests
         public void AcceptIcdPrefixedSenderOrgnr()
         {
             var sender = $"{icd}:{validOrgNr}";
-            SbdAddressInfo sbdAddressInfo = new SbdAddressInfo(sender,
+            EnvelopeInfo envelopeInfo = new EnvelopeInfo(sender,
                 validOrgNr, validProcessId, validDocumentId);
-            var result = sbdAddressInfo.ForettningsmeldingType;
+            var result = envelopeInfo.ForettningsmeldingType;
 
             Assert.NotNull(result);
         }
@@ -45,9 +45,9 @@ namespace NextMove.Lib.Tests
         public void AcceptIcdPrefixedReceiverOrgnr()
         {
             var receiver = $"{icd}:{validOrgNr}";
-            SbdAddressInfo sbdAddressInfo = new SbdAddressInfo(validOrgNr,
+            EnvelopeInfo envelopeInfo = new EnvelopeInfo(validOrgNr,
                 receiver, validProcessId, validDocumentId);
-            var result = sbdAddressInfo.ForettningsmeldingType;
+            var result = envelopeInfo.ForettningsmeldingType;
 
             Assert.NotNull(result);
         }
@@ -56,7 +56,7 @@ namespace NextMove.Lib.Tests
         public void ThrowExceptionOnIcdPrefixedPersonNumber()
         {
             var receiver = $"{icd}:{validPersonnumber}";
-            var ex = Assert.Throws < ArgumentException >(() => new SbdAddressInfo(validOrgNr,
+            var ex = Assert.Throws < ArgumentException >(() => new EnvelopeInfo(validOrgNr,
                 receiver, validProcessId, validDocumentId));
         }
 
@@ -66,9 +66,9 @@ namespace NextMove.Lib.Tests
         public void AcceptOrgAndPersonnumberForReceiver(string reciver)
         {
             var receiver = $"{icd}:{validOrgNr}";
-            SbdAddressInfo sbdAddressInfo = new SbdAddressInfo(validOrgNr,
+            EnvelopeInfo envelopeInfo = new EnvelopeInfo(validOrgNr,
                 receiver, validProcessId, validDocumentId);
-            var result = sbdAddressInfo.ForettningsmeldingType;
+            var result = envelopeInfo.ForettningsmeldingType;
 
             Assert.NotNull(result);
         }
@@ -82,7 +82,7 @@ namespace NextMove.Lib.Tests
         [InlineData("9908:12345678")]
         public void ThrowExceptoinOnInvlidSendeOrgnr(string sender)
         {
-            var ex = Assert.Throws<ArgumentException>(()=>   new SbdAddressInfo(sender, validOrgNr, validProcessId, validDocumentId));
+            var ex = Assert.Throws<ArgumentException>(()=>   new EnvelopeInfo(sender, validOrgNr, validProcessId, validDocumentId));
         }
 
         [Theory]
@@ -94,7 +94,7 @@ namespace NextMove.Lib.Tests
         [InlineData("9908:12345678")]
         public void ThrowExceptoinOnInvlidReceiverOrgnr(string receiver)
         {
-            var ex = Assert.Throws<ArgumentException>(()=>   new SbdAddressInfo(validOrgNr, receiver, validProcessId, validDocumentId));
+            var ex = Assert.Throws<ArgumentException>(()=>   new EnvelopeInfo(validOrgNr, receiver, validProcessId, validDocumentId));
         }
 
         [Theory]
@@ -103,7 +103,7 @@ namespace NextMove.Lib.Tests
         [InlineData(null)]
         public void ThrowExceptoinOnInvlidProcessId(string processId)
         {
-            var ex = Assert.Throws<ArgumentException>(()=>   new SbdAddressInfo(validOrgNr, validOrgNr, processId, validDocumentId));
+            var ex = Assert.Throws<ArgumentException>(()=>   new EnvelopeInfo(validOrgNr, validOrgNr, processId, validDocumentId));
         }
 
         [Theory]
@@ -113,7 +113,7 @@ namespace NextMove.Lib.Tests
         [InlineData("urn:no:difi:profile:arkivmelding:")]
         public void ThrowExceptoinOnInvlidDocumentID(string documentId)
         {
-            var ex = Assert.Throws<ArgumentException>(()=>   new SbdAddressInfo(validOrgNr, validOrgNr, validProcessId, documentId));
+            var ex = Assert.Throws<ArgumentException>(()=>   new EnvelopeInfo(validOrgNr, validOrgNr, validProcessId, documentId));
         }
     }
 }
