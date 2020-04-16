@@ -32,6 +32,7 @@ namespace NextMoveSample.Wpf
         public ObservableCollection<Message> SentMessages { get; set; }
         public ObservableCollection<Message> ReceivedMessages { get; set; }
         public ObservableCollection<FileInfo> SelectedFiles { get; set; }
+        public const string StoragePath = @"C:\temp\efmormidling\mottak\";
 
     
         public Status SelectedStatus { get; set; }
@@ -48,10 +49,22 @@ namespace NextMoveSample.Wpf
             SenderId = "910075918";
             RecevierId = "910075918";
             InitProcesses();
+            GetMessages();
             InitStatuses();
             InitSentAndReceivedMessages();
             InitSelectedFiles();
             
+        }
+
+        private async Task GetMessages()
+        {
+            //var messages = await nextMoveClient.GetAllMessages();
+            var mess = await nextMoveClient.GetMessage(MessageTypes.DPO, new DirectoryInfo(StoragePath));
+
+            if (mess != null)
+            {
+                ReceivedMessages.Add(new Message(mess));
+            }
         }
 
         private async Task InitProcesses()
@@ -209,12 +222,33 @@ namespace NextMoveSample.Wpf
         public Organization Receiver { get; set; }
         public string ConversationId { get; set; }
         public string MessageId { get; set; }
+
+        public Message()
+        {
+            
+        }
+
+        public Message(StandardBusinessDocument standardBusinessDocument)
+        {
+            Sender =  new Organization{Id = standardBusinessDocument.StandardBusinessDocumentHeader.Sender[0].Identifier.Value};
+            Receiver =  new Organization{Id = standardBusinessDocument.StandardBusinessDocumentHeader.Receiver[0].Identifier.Value};
+            ConversationId = standardBusinessDocument.StandardBusinessDocumentHeader.BusinessScope.Scope.FirstOrDefault(s => s.Type == "ConversationId").InstanceIdentifier;
+            MessageId = standardBusinessDocument.StandardBusinessDocumentHeader.DocumentIdentification.InstanceIdentifier;
+        }
+
+        public int Sikkerhetsnivå { get; set; }
+
+        public string FilePath { get; set; }
+
+
     }
 
     public class Organization
     {
         public string Id { get; set; }
         public string Name { get; set; }
+
+        
     }
 
     public class Process

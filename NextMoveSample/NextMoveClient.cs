@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using HeyRed.Mime;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace NextMove.Lib
@@ -101,6 +103,7 @@ namespace NextMove.Lib
 
         public async Task<Capabilities> GetCapabilities(string orgnr)
         {
+            if (string.IsNullOrEmpty(orgnr)) { throw new ArgumentException(nameof(orgnr)); }
             var result = await httpClient.GetAsync($"/api/capabilities/{orgnr}");
             if (!result.IsSuccessStatusCode) throw new Exception($"Failed getting capabilities:  {result.StatusCode}");
 
@@ -108,7 +111,104 @@ namespace NextMove.Lib
 
             return capabilities;
         }
+
+        public async Task<IList<StandardBusinessDocument>> GetAllMessages()
+        {
+
+            var httpResponseMessage = await httpClient.GetAsync("/api/messages/in");
+            if (!httpResponseMessage.IsSuccessStatusCode) { throw new Exception("Henting feilet");}
+
+            var messages = JsonConvert.DeserializeObject<Rootobject>(await httpResponseMessage.Content.ReadAsStringAsync());
+            return messages.content;
+        }
+
+        public async Task<StandardBusinessDocument> GetMessage(MessageTypes messageType, DirectoryInfo storagePath)
+        {
+            var message = await PeekMessage(messageType);
+            if (message == null) { return null; }
+
+            var messageId = message.StandardBusinessDocumentHeader.DocumentIdentification.InstanceIdentifier;
+            var payload = await GetPayload(messageId);
+
+            if (!storagePath.Exists)
+            {
+                storagePath.Create();
+            }
+
+            storagePath.CreateSubdirectory(messageId);
+
+
+            try
+            {
+                using (var fileStream = File.Create($@"{storagePath}\{messageId}\asic.zip"))
+                {
+                    payload.Seek(0, SeekOrigin.Begin);
+                    payload.CopyTo(fileStream);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            
+
+            await DeleteMessage(messageId);
+
+            return message;
+        }
+
+        public async Task<StandardBusinessDocument> PeekMessage(MessageTypes messageType)
+        {
+            var httpResponseMessage = await httpClient.GetAsync(messageType==MessageTypes.ALL?"/api/messages/in/peek": $"/api/messages/in/peek?serviceIdentifier={messageType.ToString()}");
+            if (!httpResponseMessage.IsSuccessStatusCode)
+            {
+                throw new Exception("Peek feilet");
+            }
+
+            if (httpResponseMessage.StatusCode == HttpStatusCode.NoContent)
+            {
+                return null;
+            }
+
+            return JsonConvert.DeserializeObject<StandardBusinessDocument>(await httpResponseMessage.Content
+                    .ReadAsStringAsync());
+        }
+
+        public async Task<Stream> GetPayload(string messageId)
+        {
+            if(string.IsNullOrEmpty(messageId)) { throw new ArgumentException(nameof(messageId)) ;}
+
+            var httpResponseMessage = await httpClient.GetAsync($"/api/messages/in/pop/{messageId}");
+            if (!httpResponseMessage.IsSuccessStatusCode) { throw new Exception("Payload feilet");}
+
+            return await httpResponseMessage.Content.ReadAsStreamAsync();
+        }
+
+        public async Task DeleteMessage(string messageId)
+        {
+            if (string.IsNullOrEmpty(messageId)) { throw new ArgumentException(nameof(messageId)); }
+
+            var httpResponseMessage = await httpClient.DeleteAsync($"/api/messages/in/{messageId}");
+            if(!httpResponseMessage.IsSuccessStatusCode) 
+            {
+                throw new Exception("Slette melding feilet");
+            }
+        }
+
+
     }
 
-   
+    public enum MessageTypes
+    {
+        DPO,
+        DPI,
+        DPV,
+        DPE,
+        DPF,
+        DPA,
+        ALL
+    }
+
+
 }
