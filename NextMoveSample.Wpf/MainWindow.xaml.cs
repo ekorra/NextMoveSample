@@ -236,6 +236,11 @@ namespace NextMoveSample.Wpf
             MessageId = standardBusinessDocument.StandardBusinessDocumentHeader.DocumentIdentification.InstanceIdentifier;
         }
 
+        public void ViewPayload(string path)
+        {
+            System.Diagnostics.Process.Start("explorer.exe", $@"{path}\{MessageId}");
+        }
+
         public int Sikkerhetsnivå { get; set; }
 
         public string FilePath { get; set; }
@@ -262,4 +267,6 @@ namespace NextMoveSample.Wpf
         public string Name { get; set; }
         public string Id { get; set; }
     }
+
+    
 }
