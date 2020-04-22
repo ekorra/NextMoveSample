@@ -21,18 +21,49 @@
                     </Grid.ColumnDefinitions>
                     <GroupBox Grid.Column="0" Header="Adressering">
                         <StackPanel>
-                            <Label Content="Avsender"/>
+                            <StackPanel.Resources>
+                                <Style x:Key="HeaderStyle" TargetType ="Label">
+                                    <Setter Property="Width" Value="85"/>
+                                </Style>
+                                <Style x:Key="OrgNameStyle" TargetType="TextBox">
+                                    <Setter Property="Foreground" Value="Gray" />
+                                    <Setter Property="Width" Value="200"/>
+                                    <Setter Property="IsReadOnly" Value="True"/>
+                                </Style>
+                                <Style x:Key="OrgIdStyle" TargetType="TextBox">
+                                    <Setter Property="Width" Value="100"/>
+                                </Style>
+                                <Style x:Key="ComboboxIdStyle" TargetType="ComboBox">
+                                    <Setter Property="Width" Value="300"/>
+                                </Style>
+                                <Style x:Key="IdStyle" TargetType="TextBox">
+                                    <Setter Property="Width" Value="300"/>
+                                </Style>
+                            </StackPanel.Resources>
                             <StackPanel Orientation="Horizontal">
-                                <TextBox DataContext="{Binding MessageViewModel}" Text="{Binding Sender.Id}" Width="100" />
-                                <TextBox IsReadOnly="True" DataContext="{Binding MessageViewModel}" Text="{Binding Sender.Name}" Width="Auto"></TextBox>
+                                <Label Content="Avsender" Style="{StaticResource HeaderStyle}"/>
+                                <TextBox DataContext="{Binding MessageViewModel}" Text="{Binding Sender.Id}" Style="{StaticResource OrgIdStyle}" />
+                                <TextBox IsReadOnly="True" DataContext="{Binding MessageViewModel}" Text="{Binding Sender.Name}" Style="{StaticResource OrgNameStyle}"></TextBox>
                             </StackPanel>
-                            <Label Content="Mottaker"/>
                             <StackPanel Orientation="Horizontal">
-                                <TextBox DataContext="{Binding MessageViewModel}" Text="{Binding Receiver.Id}" Width="100" />
-                                <TextBox IsReadOnly="True" DataContext="{Binding MessageViewModel}" Text="{Binding Receiver.Name}" Width="Auto"></TextBox>
+                                <Label Content="Mottaker" Style="{StaticResource HeaderStyle}"/>
+                                <TextBox DataContext="{Binding MessageViewModel}" Text="{Binding Receiver.Id}" Style="{StaticResource OrgIdStyle}" />
+                                <TextBox IsReadOnly="True" DataContext="{Binding MessageViewModel}" Text="{Binding Receiver.Name}" Style="{StaticResource OrgNameStyle}"></TextBox>
                             </StackPanel>
-                            <Label Content="Prosess"/>
-                            <ComboBox DataContext="{Binding MessageViewModel}" ItemsSource="{Binding Path=Receiver.SupportedProcesses}" DisplayMemberPath="Name" SelectedValue="{Binding Path=SelectedProcess}" />
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Prosess" Style="{StaticResource HeaderStyle}" />
+                                <ComboBox DataContext="{Binding MessageViewModel}"
+                                          ItemsSource="{Binding Path=Receiver.SupportedProcesses}"
+                                          DisplayMemberPath="Name" SelectedValue="{Binding Path=SelectedProcess}"  Style="{StaticResource ComboboxIdStyle}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="ConvesationId" Style="{StaticResource HeaderStyle}"></Label>
+                                <TextBox Text="{Binding Path=MessageViewModel.ConversationID}" Style="{StaticResource IdStyle}"></TextBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="MessageId" Style="{StaticResource HeaderStyle}"></Label>
+                                <TextBox Text="{Binding Path=MessageViewModel.ConversationID}" Style="{StaticResource IdStyle}"></TextBox>
+                            </StackPanel>
                         </StackPanel>
                     </GroupBox>
                     <StackPanel Grid.Column="1">
