@@ -59,11 +59,11 @@
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="ConvesationId" Style="{StaticResource HeaderStyle}"></Label>
-                                <TextBox Text="{Binding Path=MessageViewModel.ConversationID}" Style="{StaticResource IdStyle}"></TextBox>
+                                <TextBox Text="{Binding Path=MessageViewModel.ConversationId}" Style="{StaticResource IdStyle}"></TextBox>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="MessageId" Style="{StaticResource HeaderStyle}"></Label>
-                                <TextBox Text="{Binding Path=MessageViewModel.ConversationID}" Style="{StaticResource IdStyle}"></TextBox>
+                                <TextBox Text="{Binding Path=MessageViewModel.MessageId}" Style="{StaticResource IdStyle}"></TextBox>
                             </StackPanel>
                         </StackPanel>
                     </GroupBox>

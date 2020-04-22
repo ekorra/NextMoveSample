@@ -53,6 +53,11 @@ namespace NextMoveSample.Wpf.ViewModels
             IsEnabled = isBusy == false;
         }
 
+        public void Reset()
+        {
+            InitData();
+        }
+
         public bool IsEnabled
         {
             get => isEnabled;
