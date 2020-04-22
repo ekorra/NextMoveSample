@@ -12,7 +12,7 @@
             <RowDefinition Height="5"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TabControl Grid.Row="0" HorizontalAlignment="Stretch">
+        <TabControl Grid.Row="0" HorizontalAlignment="Stretch" IsEnabled="{Binding IsEnabled}">
             <TabItem Header="Arkivmelding">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -51,7 +51,6 @@
                         </GroupBox>
                         <StackPanel Orientation="Horizontal">
                             <Button x:Name="Reset" Content="Reset"/>
-                            <!--<Button Name="SendButton" Click="SendButton_OnClick">Send</Button>-->
                             <Button x:Name="Send" Content="Send" IsEnabled="{Binding Path=MessageViewModel.IsValid}"/>
                         </StackPanel>
                     </StackPanel>

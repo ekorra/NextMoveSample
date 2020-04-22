@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
 using Caliburn.Micro;
+using NextMove.Lib;
 
 namespace NextMoveSample.Wpf.ViewModels
 {
     public class ShellViewModel: PropertyChangedBase
     {
-        //private string sender;
-        private string receiver;
-
         private MessageViewModel messageViewModel;
-        private ProcessViewModel selectedProcess;
-        private int selectedSecurityLevel;
+        private readonly NextMoveClient nextMoveClient;
+        private bool isEnabled;
 
         public MessageViewModel MessageViewModel
         {
@@ -26,53 +27,56 @@ namespace NextMoveSample.Wpf.ViewModels
             }
         }
 
-        public BindableCollection<ProcessViewModel> Processes { get; set; }
-       
-
-        public ProcessViewModel SelectedProcess
-        {
-            get => selectedProcess;
-            set
-            {
-                if (Equals(value, selectedProcess)) return;
-                selectedProcess = value;
-                NotifyOfPropertyChange(() => SelectedProcess);
-            }
-        }
-
         public BindableCollection<int> SecurityLevels { get; set; }
 
-        public int SelectedSecurityLevel
+
+        public bool CanSend => ((!string.IsNullOrEmpty(MessageViewModel.Sender.Id)) && (!string.IsNullOrEmpty(MessageViewModel.Receiver.Id)));
+
+        public async Task Send()
         {
-            get => selectedSecurityLevel;
-            set
+            SetWorkingState(true);
+            try
             {
-                if (value == selectedSecurityLevel) return;
-                selectedSecurityLevel = value;
-                NotifyOfPropertyChange(() => SelectedSecurityLevel);
+                await nextMoveClient.SendMessage(MessageViewModel.GetEnvelopeInfo(), MessageViewModel.GetBusinessMessage(),
+                    MessageViewModel.PayloadInfo);
             }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                Console.WriteLine(e);
+            }
+            SetWorkingState(false); 
         }
 
-
-       
-        public bool CanSend
+        private void SetWorkingState(bool isBusy)
         {
-            get { return ((!string.IsNullOrEmpty(MessageViewModel.Sender.Id)) && (!string.IsNullOrEmpty(MessageViewModel.Receiver.Id))); }
+            IsEnabled = isBusy == false;
+        }
+
+        public bool IsEnabled
+        {
+            get => isEnabled;
+            private set
+            {
+                if (value == isEnabled) return;
+                isEnabled = value;
+                NotifyOfPropertyChange(() => IsEnabled);
+            }
         }
 
         public ShellViewModel()
         {
-            InitTestData();
+            nextMoveClient = new NextMoveClient(new HttpClient());
+            InitData();
+            SetWorkingState(false);
         }
 
-        private void InitTestData()
+        private void InitData()
         {
-            SecurityLevels = new BindableCollection<int>() {3, 4};
-            MessageViewModel = new MessageViewModel
-            {
-                Sender = new ParticipantViewModel(false), 
-                Receiver = new ParticipantViewModel(true)
-            };
+            MessageViewModel = new MessageViewModel(nextMoveClient);
+            MessageViewModel.Sender.Id = "910075918";
+            MessageViewModel.Receiver.Id = "910075918";
+            SecurityLevels = new BindableCollection<int>{3,4};
         }
 
         

@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using Caliburn.Micro;
+using NextMove.Lib;
 using IFormatProvider = System.IFormatProvider;
 
 namespace NextMoveSample.Wpf.ViewModels
 {
     public class ParticipantViewModel: PropertyChangedBase
     {
+        private readonly NextMoveClient nextMoveClient;
         private string id;
         private string name;
         private BindableCollection<ProcessViewModel> supportedProcesses;
@@ -47,11 +49,14 @@ namespace NextMoveSample.Wpf.ViewModels
 
         public bool IsReceiver { get; }
 
-        public ParticipantViewModel(bool isReceiver)
+        public ParticipantViewModel(bool isReceiver, NextMoveClient nextMoveClient)
         {
             IsReceiver = isReceiver;
+            this.nextMoveClient = nextMoveClient;
             SupportedProcesses = new BindableCollection<ProcessViewModel>();
         }
+
+       
 
         private string GetName()
         {
@@ -63,7 +68,7 @@ namespace NextMoveSample.Wpf.ViewModels
             supportedProcesses.Clear();
             var processes =  new List<ProcessViewModel>
             {
-                new ProcessViewModel( @"urn:no:difi:profile:arkivmelding:planByggOgGeodata:ver1.0", "Plan bygg og geodata"),
+                new ProcessViewModel( @"urn:no:difi:profile:arkivmelding:administrasjon:ver1.0", "Administrasjon"),
                 new ProcessViewModel( @"urn:no:difi:profile:arkivmelding:helseSosialOgOmsorg:ver1.0", "Helse sosial og omsorg"),
                 new ProcessViewModel( @"urn:no:difi:profile:arkivmelding:oppvekstOgUtdanning:ver1.0", "Oppvekst og utdanning")
 

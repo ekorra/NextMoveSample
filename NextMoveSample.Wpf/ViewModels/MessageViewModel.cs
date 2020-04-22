@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Caliburn.Micro;
+using NextMove.Lib;
 
 
 namespace NextMoveSample.Wpf.ViewModels
 {
     public class MessageViewModel : PropertyChangedBase
     {
+        private readonly NextMoveClient nextMoveClient;
         private ParticipantViewModel sender;
         private ParticipantViewModel receiver;
         private int? selectedSecurityLevel;
@@ -17,13 +20,19 @@ namespace NextMoveSample.Wpf.ViewModels
         private string conversationId;
         private string messageId;
         private ObservableCollection<FileInfo> payloadInfo;
-        
+        private DocumentViewModel selectedDocument;
 
-        public MessageViewModel()
+
+        public MessageViewModel(NextMoveClient nextMoveClient)
         {
+            this.nextMoveClient = nextMoveClient;
             ConversationId = Guid.NewGuid().ToString();
+            Sender = new ParticipantViewModel(false, nextMoveClient);
+            Receiver = new ParticipantViewModel(true, nextMoveClient);
             MessageId = Guid.NewGuid().ToString();
             PayloadInfo = new ObservableCollection<FileInfo>();
+            SelectedDocument = new DocumentViewModel
+                {Id = @"urn:no:difi:arkivmelding:xsd::arkivmelding", Name = "Arkivmelding"};
 
         }
 
@@ -85,7 +94,17 @@ namespace NextMoveSample.Wpf.ViewModels
             }
         }
 
-        public DocumentViewModel SelectedDocument { get; set; }
+        public DocumentViewModel SelectedDocument
+        {
+            get => selectedDocument;
+            set
+            {
+                if (Equals(value, selectedDocument)) return;
+                selectedDocument = value;
+                NotifyOfPropertyChange(() => SelectedDocument);
+                NotifyOfPropertyChange(() => IsValid);
+            }
+        }
 
         public int? SelectedSecurityLevel
         {
@@ -107,14 +126,35 @@ namespace NextMoveSample.Wpf.ViewModels
                 if (Equals(value, payloadInfo)) return;
                 payloadInfo = value;
                 NotifyOfPropertyChange(() => PayloadInfo);
+                NotifyOfPropertyChange(() => IsValid);
             }
         }
 
-        public bool IsValid
+        private bool HasPayload()
         {
-            get { return Sender.IsValid && Receiver.IsValid && SelectedSecurityLevel != null && SelectedProcess != null ; }
+            return PayloadInfo != null && PayloadInfo.Any();
         }
 
+        public bool IsValid => Sender.IsValid && Receiver.IsValid && SelectedSecurityLevel != null && SelectedProcess != null && HasPayload();
 
+        public EnvelopeInfo GetEnvelopeInfo()
+        {
+            // "urn:no:difi:arkivmelding:xsd::arkivmelding"
+            var envelope = new EnvelopeInfo(Sender.Id, Receiver.Id, selectedProcess.Id, SelectedDocument.Id)
+            {
+                ConversationId = this.ConversationId,
+                MessageId = this.MessageId
+            };
+            return envelope;
+        }
+
+        public BusinessMessageCore GetBusinessMessage()
+        {
+            return new DpoBusinessMessage
+            {
+                PrimaryDocumentName = "arkivmelding.xml",
+                SecurityLevel = SelectedSecurityLevel.Value
+            };
+        }
     }
 }
