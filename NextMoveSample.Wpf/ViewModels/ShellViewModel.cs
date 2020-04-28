@@ -85,10 +85,24 @@ namespace NextMoveSample.Wpf.ViewModels
         }
 
         
+        public void TabSelected(string tabName)
+        {
+
+        }
+
+
+
 
         public void AddFiles(FileInfo file)
         {
             MessageViewModel.PayloadInfo.Add(file);
         }
+    }
+
+    public enum Meldingstyper
+    {
+        ARKIV,
+        DPI,
+        AVTALE
     }
 }

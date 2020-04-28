@@ -148,7 +148,7 @@ namespace NextMoveSample.Wpf.ViewModels
             return envelope;
         }
 
-        public BusinessMessageCore GetBusinessMessage()
+        public virtual BusinessMessageCore GetBusinessMessage()
         {
             return new DpoBusinessMessage
             {

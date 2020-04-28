@@ -3,6 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:cal="http://www.caliburnproject.org"
         xmlns:local="clr-namespace:NextMoveSample.Wpf.Views"
         mc:Ignorable="d"
         Title="ShellView" Height="450" Width="800">
@@ -12,8 +14,8 @@
             <RowDefinition Height="5"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TabControl Grid.Row="0" HorizontalAlignment="Stretch" IsEnabled="{Binding IsEnabled}">
-            <TabItem Header="Arkivmelding">
+        <TabControl Grid.Row="0" HorizontalAlignment="Stretch" IsEnabled="{Binding IsEnabled}" SelectionChanged="Selector_OnSelectionChanged" >
+            <TabItem Header="Arkivmelding" x:Name="Arkivmelding">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -88,8 +90,15 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <TabItem Header="Avtalemelding"></TabItem>
-            <TabItem Header="DPI"></TabItem>
+            <TabItem Header="Avtalemelding" x:Name="Avtale"/>
+            <!--<TabItem Header="Avtalemelding" x:Name="Avtalemelding" >
+                <i:EventTrigger EventName="Click">
+                    <cal:ActionMessage MethodName="TabSelected">
+                        <cal:Parameter  Value="{Binding ElementName=Avtalemelding, Path=Name}"></cal:Parameter>
+                    </cal:ActionMessage>
+                </i:EventTrigger>
+            </TabItem>-->
+            <TabItem Header="DPI" x:Name="DPI"></TabItem>
         </TabControl>
         <GridSplitter Grid.Row="1"></GridSplitter>
         <TabControl Grid.Row="2">
