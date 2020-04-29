@@ -62,26 +62,7 @@ namespace NextMove.Lib.Tests
                 businessMessage.PrimaryDocumentName = "somedocument.pdf";
                 businessMessage.identifier = "no.difi.avtalt.test.v1";
 
-                //var sb = new StringBuilder();
-                //using (var sw = new StringWriter(sb))
-                //{
-                //    using (var writer = new JsonTextWriter(sw))
-                //    {
-                //        writer.Formatting = Formatting.None;
-
-                //        writer.WriteStartObject();
-                //        writer.WritePropertyName(@"eksempel");
-                //        writer.WriteValue(@"verdi");
-                //        writer.WritePropertyName("eksempelObjekt");
-                //        writer.WriteStartObject();
-                //        writer.WritePropertyName("eksempel2");
-                //        writer.WriteValue("verdi2");
-                //        writer.WritePropertyName("eksempel3");
-                //        writer.WriteValue("verdi3");
-                //        writer.WriteEndObject();
-                //        writer.WriteEndObject();
-                //    }
-                //}
+               
 
                 if(!string.IsNullOrEmpty(content))
                 {

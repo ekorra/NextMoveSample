@@ -69,7 +69,7 @@ namespace NextMoveSample.Wpf
 
         private async Task InitProcesses()
         {
-             Processes = new ObservableCollection<Process>();
+            Processes = new ObservableCollection<Process>();
             nextMoveClient = new NextMoveClient(new HttpClient());
             var result = await nextMoveClient.GetCapabilities(RecevierId);
             foreach (var capability in result.CapabilitiesList)

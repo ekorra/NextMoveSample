@@ -55,6 +55,7 @@ namespace NextMoveSample.Wpf.ViewModels
 
         public void Reset()
         {
+            MessageViewModel = new MessageViewModel(nextMoveClient);
             InitData();
         }
 
@@ -72,13 +73,13 @@ namespace NextMoveSample.Wpf.ViewModels
         public ShellViewModel()
         {
             nextMoveClient = new NextMoveClient(new HttpClient());
+            MessageViewModel = new MessageViewModel(nextMoveClient);
             InitData();
             SetWorkingState(false);
         }
 
         private void InitData()
         {
-            MessageViewModel = new MessageViewModel(nextMoveClient);
             MessageViewModel.Sender.Id = "910075918";
             MessageViewModel.Receiver.Id = "910075918";
             SecurityLevels = new BindableCollection<int>{3,4};
@@ -87,7 +88,20 @@ namespace NextMoveSample.Wpf.ViewModels
         
         public void TabSelected(string tabName)
         {
-
+            if (tabName.ToUpper() == "DPO")
+            {
+                MessageViewModel = new MessageViewModel(nextMoveClient);
+                InitData();
+            }
+            else if (tabName.ToUpper() == "DPA")
+            {
+                MessageViewModel = new DpaMessageViewModel(nextMoveClient);
+                InitData();
+            }
+            else
+            {
+                messageViewModel = new MessageViewModel(nextMoveClient);
+            }
         }
 
 
@@ -97,7 +111,11 @@ namespace NextMoveSample.Wpf.ViewModels
         {
             MessageViewModel.PayloadInfo.Add(file);
         }
+
+        public int SelectedView { get; set; }
     }
+
+
 
     public enum Meldingstyper
     {

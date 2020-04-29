@@ -1,0 +1,57 @@
+﻿<UserControl x:Class="NextMoveSample.Wpf.UserControls.EnvelopeUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NextMoveSample.Wpf.UserControls"
+             mc:Ignorable="d" d:DesignWidth="400" Height="150"
+             >
+    <Grid>
+        <StackPanel>
+            <StackPanel.Resources>
+                <Style x:Key="HeaderStyle" TargetType ="Label">
+                    <Setter Property="Width" Value="85"/>
+                </Style>
+                <Style x:Key="OrgNameStyle" TargetType="TextBox">
+                    <Setter Property="Foreground" Value="Gray" />
+                    <Setter Property="Width" Value="200"/>
+                    <Setter Property="IsReadOnly" Value="True"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                </Style>
+                <Style x:Key="OrgIdStyle" TargetType="TextBox">
+                    <Setter Property="Width" Value="100"/>
+                </Style>
+                <Style x:Key="ComboboxIdStyle" TargetType="ComboBox">
+                    <Setter Property="Width" Value="300"/>
+                </Style>
+                <Style x:Key="IdStyle" TargetType="TextBox">
+                    <Setter Property="Width" Value="300"/>
+                </Style>
+            </StackPanel.Resources>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Avsender" Style="{StaticResource HeaderStyle}"/>
+                <TextBox DataContext="{Binding MessageViewModel}" Text="{Binding Sender.Id}" Style="{StaticResource OrgIdStyle}" />
+                <TextBox IsReadOnly="True" DataContext="{Binding MessageViewModel}" Text="{Binding Sender.Name}" Style="{StaticResource OrgNameStyle}"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Mottaker" Style="{StaticResource HeaderStyle}"/>
+                <TextBox DataContext="{Binding MessageViewModel}" Text="{Binding Receiver.Id}" Style="{StaticResource OrgIdStyle}" />
+                <TextBox IsReadOnly="True" DataContext="{Binding MessageViewModel}" Text="{Binding Receiver.Name}" Style="{StaticResource OrgNameStyle}"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Prosess" Style="{StaticResource HeaderStyle}" />
+                <ComboBox DataContext="{Binding MessageViewModel}"
+                                      ItemsSource="{Binding Path=Receiver.SupportedProcesses}"
+                                      DisplayMemberPath="Name" SelectedValue="{Binding Path=SelectedProcess}"  Style="{StaticResource ComboboxIdStyle}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="ConvesationId" Style="{StaticResource HeaderStyle}"></Label>
+                <TextBox Text="{Binding Path=MessageViewModel.ConversationId}" Style="{StaticResource IdStyle}"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="MessageId" Style="{StaticResource HeaderStyle}"></Label>
+                <TextBox Text="{Binding Path=MessageViewModel.MessageId}" Style="{StaticResource IdStyle}"></TextBox>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

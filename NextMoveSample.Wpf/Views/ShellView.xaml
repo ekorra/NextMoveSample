@@ -7,23 +7,24 @@
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:local="clr-namespace:NextMoveSample.Wpf.Views"
         mc:Ignorable="d"
-        Title="ShellView" Height="450" Width="800">
+        Title="ShellView" Height="450" Width="800"
+        xmlns:uc="clr-namespace:NextMoveSample.Wpf.UserControls">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="5"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TabControl Grid.Row="0" HorizontalAlignment="Stretch" IsEnabled="{Binding IsEnabled}" SelectionChanged="Selector_OnSelectionChanged" >
-            <TabItem Header="Arkivmelding" x:Name="Arkivmelding">
+            <TabItem Header="Arkivmelding" x:Name="DPO">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <GroupBox Grid.Column="0" Header="Adressering">
                         <StackPanel>
-                            <StackPanel.Resources>
+                            <!--<StackPanel.Resources>
                                 <Style x:Key="HeaderStyle" TargetType ="Label">
                                     <Setter Property="Width" Value="85"/>
                                 </Style>
@@ -66,8 +67,10 @@
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="MessageId" Style="{StaticResource HeaderStyle}"></Label>
                                 <TextBox Text="{Binding Path=MessageViewModel.MessageId}" Style="{StaticResource IdStyle}"></TextBox>
-                            </StackPanel>
+                            </StackPanel>-->
+                           <uc:EnvelopeUserControl></uc:EnvelopeUserControl>
                         </StackPanel>
+                       
                     </GroupBox>
                     <StackPanel Grid.Column="1">
                         <GroupBox Header="Forettningsmelding">
@@ -77,11 +80,12 @@
                             </StackPanel>
                         </GroupBox>
                         <GroupBox Header="Payload">
-                            <StackPanel>
+                            <!--<StackPanel>
                                 <Button >Velg filer</Button>
                                 <ListBox ItemsSource="{Binding Path=MessageViewModel.PayloadInfo}" AllowDrop="True" DragEnter="UIElement_OnDragEnter" Drop="UIElement_OnDrop" Height="50"></ListBox>
                                 <ListBox />
-                            </StackPanel>
+                            </StackPanel>-->
+                            <uc:PayloadUserControl></uc:PayloadUserControl>
                         </GroupBox>
                         <StackPanel Orientation="Horizontal">
                             <Button x:Name="Reset" Content="Reset"/>
@@ -90,14 +94,44 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <TabItem Header="Avtalemelding" x:Name="Avtale"/>
-            <!--<TabItem Header="Avtalemelding" x:Name="Avtalemelding" >
-                <i:EventTrigger EventName="Click">
-                    <cal:ActionMessage MethodName="TabSelected">
-                        <cal:Parameter  Value="{Binding ElementName=Avtalemelding, Path=Name}"></cal:Parameter>
-                    </cal:ActionMessage>
-                </i:EventTrigger>
-            </TabItem>-->
+            <TabItem Header="Avtalemelding" x:Name="DPA">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <GroupBox Header="Adressering">
+                        <uc:EnvelopeUserControl></uc:EnvelopeUserControl>
+                    </GroupBox>
+                    <GroupBox Header="Payload">
+                        <uc:PayloadUserControl></uc:PayloadUserControl>
+                    </GroupBox>
+                </StackPanel>
+                <StackPanel Grid.Column="1">
+                    <GroupBox Header="Forettningsmelding">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label>Sikkerhetsnivå</Label>
+                                <ComboBox ItemsSource="{Binding Path=SecurityLevels}" SelectedValue="{Binding Path=MessageViewModel.SelectedSecurityLevel}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Primarydocument:"/>
+                                <TextBox  Text="{Binding Path=MessageViewModel.PrimaryDocument}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Identifier:"/>
+                                    <TextBox Text="{Binding Path=MessageViewModel.Identifier}"/>
+                            </StackPanel>
+                            <StackPanel>
+                                <Label Content="Freestyle JSON"></Label>
+                                    <TextBox AllowDrop="False" VerticalScrollBarVisibility="Visible" TextWrapping="Wrap" AcceptsReturn="True" Height="150" Text="{Binding Path=MessageViewModel.Content}"/>
+                            </StackPanel>
+                            </StackPanel>
+                    </GroupBox>
+                </StackPanel>
+            </Grid>
+            </TabItem>
             <TabItem Header="DPI" x:Name="DPI"></TabItem>
         </TabControl>
         <GridSplitter Grid.Row="1"></GridSplitter>

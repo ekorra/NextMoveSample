@@ -9,17 +9,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 using NextMoveSample.Wpf.ViewModels;
 
-namespace NextMoveSample.Wpf.Views
+namespace NextMoveSample.Wpf.UserControls
 {
     /// <summary>
-    /// Interaction logic for ShellView.xaml
+    /// Interaction logic for PayloadUserControl.xaml
     /// </summary>
-    public partial class ShellView : Window
+    public partial class PayloadUserControl : UserControl
     {
-        public ShellView()
+        public PayloadUserControl()
         {
             InitializeComponent();
         }
@@ -43,19 +44,7 @@ namespace NextMoveSample.Wpf.Views
                 ((ShellViewModel)this.DataContext).AddFiles(new FileInfo(file));
             }
 
-           
-        }
 
-        private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (!(sender is TabControl s)) return;
-            
-           
-            var x = s.SelectedItem as TabItem;
-            if (x == null) return;
-                ((ShellViewModel)this.DataContext).TabSelected(x.Name);
-
-            e.Handled = true;
         }
     }
 }
