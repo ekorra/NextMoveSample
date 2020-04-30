@@ -11,81 +11,28 @@
         xmlns:uc="clr-namespace:NextMoveSample.Wpf.UserControls">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="300"/>
             <RowDefinition Height="5"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TabControl Grid.Row="0" HorizontalAlignment="Stretch" IsEnabled="{Binding IsEnabled}" SelectionChanged="Selector_OnSelectionChanged" >
-            <TabItem Header="Arkivmelding" x:Name="DPO">
-                <Grid>
+        <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <GroupBox Grid.Column="0" Header="Adressering">
-                        <StackPanel>
-                            <!--<StackPanel.Resources>
-                                <Style x:Key="HeaderStyle" TargetType ="Label">
-                                    <Setter Property="Width" Value="85"/>
-                                </Style>
-                                <Style x:Key="OrgNameStyle" TargetType="TextBox">
-                                    <Setter Property="Foreground" Value="Gray" />
-                                    <Setter Property="Width" Value="200"/>
-                                    <Setter Property="IsReadOnly" Value="True"/>
-                                    <Setter Property="BorderThickness" Value="0"/>
-                                </Style>
-                                <Style x:Key="OrgIdStyle" TargetType="TextBox">
-                                    <Setter Property="Width" Value="100"/>
-                                </Style>
-                                <Style x:Key="ComboboxIdStyle" TargetType="ComboBox">
-                                    <Setter Property="Width" Value="300"/>
-                                </Style>
-                                <Style x:Key="IdStyle" TargetType="TextBox">
-                                    <Setter Property="Width" Value="300"/>
-                                </Style>
-                            </StackPanel.Resources>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Avsender" Style="{StaticResource HeaderStyle}"/>
-                                <TextBox DataContext="{Binding MessageViewModel}" Text="{Binding Sender.Id}" Style="{StaticResource OrgIdStyle}" />
-                                <TextBox IsReadOnly="True" DataContext="{Binding MessageViewModel}" Text="{Binding Sender.Name}" Style="{StaticResource OrgNameStyle}"></TextBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Mottaker" Style="{StaticResource HeaderStyle}"/>
-                                <TextBox DataContext="{Binding MessageViewModel}" Text="{Binding Receiver.Id}" Style="{StaticResource OrgIdStyle}" />
-                                <TextBox IsReadOnly="True" DataContext="{Binding MessageViewModel}" Text="{Binding Receiver.Name}" Style="{StaticResource OrgNameStyle}"></TextBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Prosess" Style="{StaticResource HeaderStyle}" />
-                                <ComboBox DataContext="{Binding MessageViewModel}"
-                                          ItemsSource="{Binding Path=Receiver.SupportedProcesses}"
-                                          DisplayMemberPath="Name" SelectedValue="{Binding Path=SelectedProcess}"  Style="{StaticResource ComboboxIdStyle}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="ConvesationId" Style="{StaticResource HeaderStyle}"></Label>
-                                <TextBox Text="{Binding Path=MessageViewModel.ConversationId}" Style="{StaticResource IdStyle}"></TextBox>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="MessageId" Style="{StaticResource HeaderStyle}"></Label>
-                                <TextBox Text="{Binding Path=MessageViewModel.MessageId}" Style="{StaticResource IdStyle}"></TextBox>
-                            </StackPanel>-->
-                           <uc:EnvelopeUserControl></uc:EnvelopeUserControl>
-                        </StackPanel>
-                       
-                    </GroupBox>
-                    <StackPanel Grid.Column="1">
-                        <GroupBox Header="Forettningsmelding">
+                    <StackPanel  Grid.Column="0">
+                        <GroupBox Header="Adressering">
                             <StackPanel>
-                                <Label>Sikkerhetsnivå</Label>
-                                <ComboBox ItemsSource="{Binding Path=SecurityLevels}" SelectedValue="{Binding Path=MessageViewModel.SelectedSecurityLevel}"/>
+                                <uc:EnvelopeUserControl></uc:EnvelopeUserControl>
                             </StackPanel>
                         </GroupBox>
                         <GroupBox Header="Payload">
-                            <!--<StackPanel>
-                                <Button >Velg filer</Button>
-                                <ListBox ItemsSource="{Binding Path=MessageViewModel.PayloadInfo}" AllowDrop="True" DragEnter="UIElement_OnDragEnter" Drop="UIElement_OnDrop" Height="50"></ListBox>
-                                <ListBox />
-                            </StackPanel>-->
                             <uc:PayloadUserControl></uc:PayloadUserControl>
+                        </GroupBox>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1">
+                        <GroupBox Header="Forettningsmelding" MinHeight="50">
+                            <ContentControl x:Name="ActiveItem" Height="Auto" />
                         </GroupBox>
                         <StackPanel Orientation="Horizontal">
                             <Button x:Name="Reset" Content="Reset"/>
@@ -93,47 +40,6 @@
                         </StackPanel>
                     </StackPanel>
                 </Grid>
-            </TabItem>
-            <TabItem Header="Avtalemelding" x:Name="DPA">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="0">
-                    <GroupBox Header="Adressering">
-                        <uc:EnvelopeUserControl></uc:EnvelopeUserControl>
-                    </GroupBox>
-                    <GroupBox Header="Payload">
-                        <uc:PayloadUserControl></uc:PayloadUserControl>
-                    </GroupBox>
-                </StackPanel>
-                <StackPanel Grid.Column="1">
-                    <GroupBox Header="Forettningsmelding">
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label>Sikkerhetsnivå</Label>
-                                <ComboBox ItemsSource="{Binding Path=SecurityLevels}" SelectedValue="{Binding Path=MessageViewModel.SelectedSecurityLevel}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Primarydocument:"/>
-                                <TextBox  Text="{Binding Path=MessageViewModel.PrimaryDocument}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Identifier:"/>
-                                    <TextBox Text="{Binding Path=MessageViewModel.Identifier}"/>
-                            </StackPanel>
-                            <StackPanel>
-                                <Label Content="Freestyle JSON"></Label>
-                                    <TextBox AllowDrop="False" VerticalScrollBarVisibility="Visible" TextWrapping="Wrap" AcceptsReturn="True" Height="150" Text="{Binding Path=MessageViewModel.Content}"/>
-                            </StackPanel>
-                            </StackPanel>
-                    </GroupBox>
-                </StackPanel>
-            </Grid>
-            </TabItem>
-            <TabItem Header="DPI" x:Name="DPI"></TabItem>
-        </TabControl>
         <GridSplitter Grid.Row="1"></GridSplitter>
         <TabControl Grid.Row="2">
             <TabItem Header="Sendt">

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Net.Http;
 using System.Text;
@@ -10,8 +11,9 @@ using NextMove.Lib;
 
 namespace NextMoveSample.Wpf.ViewModels
 {
-    public class ShellViewModel: PropertyChangedBase
+    public class ShellViewModel : Conductor<BusinessMessageViewModel>.Collection.OneActive
     {
+        private readonly IEventAggregator eventAggregator;
         private MessageViewModel messageViewModel;
         private readonly NextMoveClient nextMoveClient;
         private bool isEnabled;
@@ -24,11 +26,50 @@ namespace NextMoveSample.Wpf.ViewModels
                 if (Equals(value, messageViewModel)) return;
                 messageViewModel = value;
                 NotifyOfPropertyChange(() => MessageViewModel);
+
+                
             }
         }
 
-        public BindableCollection<int> SecurityLevels { get; set; }
+        public ShellViewModel()
+        {
+            this.eventAggregator = new EventAggregator();
+            nextMoveClient = new NextMoveClient(new HttpClient());
+            InitContext();
+        }
 
+        private void InitContext()
+        {
+            SetWorkingState(true);
+            MessageViewModel = new MessageViewModel(nextMoveClient, eventAggregator);
+            messageViewModel.PropertyChanged += MessageViewModelOnPropertyChanged;
+            InitData();
+            SetWorkingState(false);
+        }
+
+        private void MessageViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == nameof(messageViewModel.SelectedProcess))
+            {
+                switch (messageViewModel.SelectedProcess.ProcessType)
+                {
+                    case ProcessType.DPA:
+                        ActivateItem(new BusinessMessageDpaViewModel(eventAggregator));
+                        break;
+                    case ProcessType.DPO:
+                        ActivateItem(new BusinessMessageDpoViewModel(eventAggregator));
+                        break;
+                    case ProcessType.DPI_INFO:
+                        throw new NotImplementedException();
+                    case ProcessType.DPI_VEDTAK:
+                        throw new NotImplementedException();
+                    default:
+                        ActivateItem(null);
+                        break;
+                }
+            }
+            
+        }
 
         public bool CanSend => ((!string.IsNullOrEmpty(MessageViewModel.Sender.Id)) && (!string.IsNullOrEmpty(MessageViewModel.Receiver.Id)));
 
@@ -37,7 +78,7 @@ namespace NextMoveSample.Wpf.ViewModels
             SetWorkingState(true);
             try
             {
-                await nextMoveClient.SendMessage(MessageViewModel.GetEnvelopeInfo(), MessageViewModel.GetBusinessMessage(),
+                await nextMoveClient.SendMessage(MessageViewModel.GetEnvelopeInfo(), ActiveItem.GetBusinessMessage(),
                     MessageViewModel.PayloadInfo);
             }
             catch (Exception e)
@@ -55,8 +96,18 @@ namespace NextMoveSample.Wpf.ViewModels
 
         public void Reset()
         {
-            MessageViewModel = new MessageViewModel(nextMoveClient);
-            InitData();
+            InitContext();
+            switch (ActiveItem)
+            {
+                case BusinessMessageDpaViewModel _:
+                    ActiveItem = new BusinessMessageDpaViewModel(eventAggregator);
+                    break;
+                case BusinessMessageDpoViewModel _:
+                    ActiveItem = new BusinessMessageDpoViewModel(eventAggregator);
+                    break;
+            }
+            
+            
         }
 
         public bool IsEnabled
@@ -70,57 +121,16 @@ namespace NextMoveSample.Wpf.ViewModels
             }
         }
 
-        public ShellViewModel()
-        {
-            nextMoveClient = new NextMoveClient(new HttpClient());
-            MessageViewModel = new MessageViewModel(nextMoveClient);
-            InitData();
-            SetWorkingState(false);
-        }
 
         private void InitData()
         {
             MessageViewModel.Sender.Id = "910075918";
             MessageViewModel.Receiver.Id = "910075918";
-            SecurityLevels = new BindableCollection<int>{3,4};
         }
-
-        
-        public void TabSelected(string tabName)
-        {
-            if (tabName.ToUpper() == "DPO")
-            {
-                MessageViewModel = new MessageViewModel(nextMoveClient);
-                InitData();
-            }
-            else if (tabName.ToUpper() == "DPA")
-            {
-                MessageViewModel = new DpaMessageViewModel(nextMoveClient);
-                InitData();
-            }
-            else
-            {
-                messageViewModel = new MessageViewModel(nextMoveClient);
-            }
-        }
-
-
-
 
         public void AddFiles(FileInfo file)
         {
             MessageViewModel.PayloadInfo.Add(file);
         }
-
-        public int SelectedView { get; set; }
-    }
-
-
-
-    public enum Meldingstyper
-    {
-        ARKIV,
-        DPI,
-        AVTALE
     }
 }

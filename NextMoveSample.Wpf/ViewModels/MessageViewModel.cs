@@ -13,9 +13,9 @@ namespace NextMoveSample.Wpf.ViewModels
     public class MessageViewModel : PropertyChangedBase
     {
         private readonly NextMoveClient nextMoveClient;
+        private readonly IEventAggregator eventAggregator;
         private ParticipantViewModel sender;
         private ParticipantViewModel receiver;
-        private int? selectedSecurityLevel;
         private ProcessViewModel selectedProcess;
         private string conversationId;
         private string messageId;
@@ -23,9 +23,10 @@ namespace NextMoveSample.Wpf.ViewModels
         private DocumentViewModel selectedDocument;
 
 
-        public MessageViewModel(NextMoveClient nextMoveClient)
+        public MessageViewModel(NextMoveClient nextMoveClient, IEventAggregator eventAggregator)
         {
             this.nextMoveClient = nextMoveClient;
+            this.eventAggregator = eventAggregator;
             ConversationId = Guid.NewGuid().ToString();
             Sender = new ParticipantViewModel(false, nextMoveClient);
             Receiver = new ParticipantViewModel(true, nextMoveClient);
@@ -91,6 +92,7 @@ namespace NextMoveSample.Wpf.ViewModels
                 selectedProcess = value;
                 NotifyOfPropertyChange(() => SelectedProcess);
                 NotifyOfPropertyChange(() => IsValid);
+                eventAggregator.PublishOnUIThreadAsync(new ProcessMessage(selectedProcess.Id));
             }
         }
 
@@ -106,17 +108,7 @@ namespace NextMoveSample.Wpf.ViewModels
             }
         }
 
-        public int? SelectedSecurityLevel
-        {
-            get => selectedSecurityLevel;
-            set
-            {
-                if (value == selectedSecurityLevel) return;
-                selectedSecurityLevel = value;
-                NotifyOfPropertyChange(() => SelectedSecurityLevel);
-                NotifyOfPropertyChange(() => IsValid);
-            }
-        }
+       
 
         public ObservableCollection<FileInfo> PayloadInfo
         {
@@ -135,7 +127,7 @@ namespace NextMoveSample.Wpf.ViewModels
             return PayloadInfo != null && PayloadInfo.Any();
         }
 
-        public bool IsValid => Sender.IsValid && Receiver.IsValid && SelectedSecurityLevel != null && SelectedProcess != null && HasPayload();
+        public bool IsValid => Sender.IsValid && Receiver.IsValid && SelectedProcess != null && HasPayload();
 
         public EnvelopeInfo GetEnvelopeInfo()
         {
@@ -146,15 +138,6 @@ namespace NextMoveSample.Wpf.ViewModels
                 MessageId = this.MessageId
             };
             return envelope;
-        }
-
-        public virtual BusinessMessageCore GetBusinessMessage()
-        {
-            return new DpoBusinessMessage
-            {
-                PrimaryDocumentName = "arkivmelding.xml",
-                SecurityLevel = SelectedSecurityLevel.Value
-            };
         }
     }
 }

@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NextMoveSample.console", "N
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NextMove.Lib.Tests", "NextMove.Lib.Tests\NextMove.Lib.Tests.csproj", "{64682595-5D52-48EC-BDC7-640FB76B5E77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextMoveSample.Wpf", "NextMoveSample.Wpf\NextMoveSample.Wpf.csproj", "{8C6B3C30-5F39-471C-A17A-4C8A645F646B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NextMoveSample.Wpf", "NextMoveSample.Wpf\NextMoveSample.Wpf.csproj", "{8C6B3C30-5F39-471C-A17A-4C8A645F646B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextMove.Wpf.Tests", "NextMove.Wpf.Tests\NextMove.Wpf.Tests.csproj", "{1ED44821-EDB8-4694-8639-483623C2FF1D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{8C6B3C30-5F39-471C-A17A-4C8A645F646B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C6B3C30-5F39-471C-A17A-4C8A645F646B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C6B3C30-5F39-471C-A17A-4C8A645F646B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1ED44821-EDB8-4694-8639-483623C2FF1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1ED44821-EDB8-4694-8639-483623C2FF1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1ED44821-EDB8-4694-8639-483623C2FF1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1ED44821-EDB8-4694-8639-483623C2FF1D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

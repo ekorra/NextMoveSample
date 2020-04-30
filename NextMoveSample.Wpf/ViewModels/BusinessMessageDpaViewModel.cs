@@ -1,38 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Caliburn.Micro;
 using NextMove.Lib;
 
 namespace NextMoveSample.Wpf.ViewModels
 {
-    public class DpaMessageViewModel: MessageViewModel
+    public class BusinessMessageDpaViewModel: BusinessMessageViewModel
     {
-        private string primaryDocument;
         private string identifier;
         private string content;
 
-        public DpaMessageViewModel(NextMoveClient nextMoveClient) : base(nextMoveClient)
+        public BusinessMessageDpaViewModel(IEventAggregator eventAggregator) : base(eventAggregator)
         {
-            SelectedSecurityLevel = 3;
+            
         }
 
         public override BusinessMessageCore GetBusinessMessage()
         {
-            return new DpaBusinessMessage{SecurityLevel = SelectedSecurityLevel.Value};
-
-        }
-
-        public string PrimaryDocument
-
-        {
-            get => primaryDocument;
-            set
+            return new DpaBusinessMessage()
             {
-                if (value == primaryDocument) return;
-                primaryDocument = value;
-                NotifyOfPropertyChange(() => PrimaryDocument);
-            }
+                PrimaryDocumentName = PrimaryDocument,
+                identifier = Identifier,
+                content = Content,
+                SecurityLevel = SelectedSecurityLevel ?? 3
+            };
         }
+
+       
 
         public string Identifier
         {

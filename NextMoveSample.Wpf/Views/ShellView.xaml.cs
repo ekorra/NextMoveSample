@@ -46,16 +46,5 @@ namespace NextMoveSample.Wpf.Views
            
         }
 
-        private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (!(sender is TabControl s)) return;
-            
-           
-            var x = s.SelectedItem as TabItem;
-            if (x == null) return;
-                ((ShellViewModel)this.DataContext).TabSelected(x.Name);
-
-            e.Handled = true;
-        }
     }
 }

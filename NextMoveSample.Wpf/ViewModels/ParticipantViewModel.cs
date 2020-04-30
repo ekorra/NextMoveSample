@@ -65,14 +65,37 @@ namespace NextMoveSample.Wpf.ViewModels
 
         private void LoadProcesses()
         {
+           
+            var processes = new List<ProcessViewModel>();
             supportedProcesses.Clear();
-            var processes =  new List<ProcessViewModel>
+            if(Id.Length == 9)
             {
-                new ProcessViewModel( @"urn:no:difi:profile:arkivmelding:administrasjon:ver1.0", "Administrasjon"),
-                new ProcessViewModel( @"urn:no:difi:profile:arkivmelding:helseSosialOgOmsorg:ver1.0", "Helse sosial og omsorg"),
-                new ProcessViewModel( @"urn:no:difi:profile:arkivmelding:oppvekstOgUtdanning:ver1.0", "Oppvekst og utdanning")
+                processes =  new List<ProcessViewModel>
+                {
+                
+                    //new ProcessViewModel( @"urn:no:difi:profile:arkivmelding:administrasjon:ver1.0", "Administrasjon"),
+                    //new ProcessViewModel( @"urn:no:difi:profile:arkivmelding:helseSosialOgOmsorg:ver1.0", "Helse sosial og omsorg"),
+                    //new ProcessViewModel( @"urn:no:difi:profile:arkivmelding:oppvekstOgUtdanning:ver1.0", "Oppvekst og utdanning"),
+                    //new ProcessViewModel( @"urn:no:difi:profile:avtalt:avtalt:ver1.0	", "Avtalt")
+                    new ProcessViewModel( @"urn:no:difi:profile:arkivmelding:administrasjon:ver1.0"),
+                    new ProcessViewModel( @"urn:no:difi:profile:arkivmelding:helseSosialOgOmsorg:ver1.0"),
+                    new ProcessViewModel( @"urn:no:difi:profile:arkivmelding:oppvekstOgUtdanning:ver1.0"),
+                    new ProcessViewModel( @"urn:no:difi:profile:avtalt:avtalt:ver1.0	")
 
-            };
+                };
+            }
+            else if (Id.Length == 11)
+            {
+                processes = new List<ProcessViewModel>
+                {
+
+                    //new ProcessViewModel( @"urn:no:difi:profile:digitalpost:info:ver1.0", "Informasjon"),
+                    //new ProcessViewModel( @"urn:no:difi:profile:digitalpost:vedtak:ver1.0", "Vedtak"),
+                    new ProcessViewModel( @"urn:no:difi:profile:digitalpost:info:ver1.0"),
+                    new ProcessViewModel( @"urn:no:difi:profile:digitalpost:vedtak:ver1.0")
+
+                };
+            }
             SupportedProcesses.AddRange(processes);
         }
 
