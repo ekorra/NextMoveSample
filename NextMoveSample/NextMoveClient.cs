@@ -70,6 +70,10 @@ namespace NextMove.Lib
             
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
+                Debug.WriteLine("-------------Request-------------");
+                Debug.WriteLine(await httpResponseMessage.RequestMessage.Content.ReadAsStringAsync());
+
+                Debug.WriteLine("---------------------------------");
                 return false;
             }
 

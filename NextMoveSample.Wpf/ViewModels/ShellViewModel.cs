@@ -71,7 +71,7 @@ namespace NextMoveSample.Wpf.ViewModels
             
         }
 
-        public bool CanSend => ((!string.IsNullOrEmpty(MessageViewModel.Sender.Id)) && (!string.IsNullOrEmpty(MessageViewModel.Receiver.Id)));
+        public bool CanSend => (MessageViewModel.IsValid);
 
         public async Task Send()
         {

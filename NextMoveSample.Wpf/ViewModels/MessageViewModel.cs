@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -61,6 +62,7 @@ namespace NextMoveSample.Wpf.ViewModels
             }
         }
 
+        [Required]
         public string ConversationId
         {
             get => conversationId;
@@ -72,6 +74,7 @@ namespace NextMoveSample.Wpf.ViewModels
             }
         }
 
+        [Required (ErrorMessage = "MessageId is required")]
         public string MessageId
         {
             get => messageId;
@@ -92,7 +95,26 @@ namespace NextMoveSample.Wpf.ViewModels
                 selectedProcess = value;
                 NotifyOfPropertyChange(() => SelectedProcess);
                 NotifyOfPropertyChange(() => IsValid);
+                SetDocument();
                 eventAggregator.PublishOnUIThreadAsync(new ProcessMessage(selectedProcess.Id));
+            }
+        }
+
+        private void SetDocument()
+        {
+            switch (SelectedProcess.ProcessType)
+            {
+                case ProcessType.DPO:
+                    SelectedDocument = new DocumentViewModel
+                        {Id = "urn:no:difi:arkivmelding:xsd::arkivmelding", Name = "Arkivmelding"};
+                    break;
+                case ProcessType.DPA:
+                    SelectedDocument = new DocumentViewModel {Id = "urn:no:difi:avtalt:xsd::avtalt", Name = "Avtalt"};
+                    break;
+                case ProcessType.DPI_INFO:
+                    break;
+                case ProcessType.DPI_VEDTAK:
+                    break;
             }
         }
 
