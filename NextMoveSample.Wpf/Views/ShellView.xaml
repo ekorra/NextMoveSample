@@ -16,45 +16,45 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel  Grid.Column="0">
-                        <GroupBox Header="Adressering">
-                            <StackPanel>
-                                <uc:EnvelopeUserControl></uc:EnvelopeUserControl>
-                            </StackPanel>
-                        </GroupBox>
-                        <GroupBox Header="Payload">
-                            <uc:PayloadUserControl></uc:PayloadUserControl>
-                        </GroupBox>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <StackPanel  Grid.Column="0">
+                <GroupBox Header="Adressering">
+                    <StackPanel>
+                        <uc:EnvelopeUserControl></uc:EnvelopeUserControl>
                     </StackPanel>
-                    <StackPanel Grid.Column="1">
-                        <GroupBox Header="Forettningsmelding" MinHeight="50">
-                            <ContentControl x:Name="ActiveItem" Height="Auto" />
-                        </GroupBox>
-                        <StackPanel Orientation="Horizontal">
-                            <Button x:Name="Reset" Content="Reset"/>
-                            <Button x:Name="Send" Content="Send" IsEnabled="{Binding Path=MessageViewModel.IsValid}"/>
-                        </StackPanel>
-                    </StackPanel>
-                </Grid>
+                </GroupBox>
+                <GroupBox Header="Payload">
+                    <uc:PayloadUserControl></uc:PayloadUserControl>
+                </GroupBox>
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+                <GroupBox Header="Forettningsmelding" MinHeight="50">
+                    <ContentControl x:Name="ActiveItem" Height="Auto" />
+                </GroupBox>
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="Reset" Content="Reset"/>
+                    <Button x:Name="Send" Content="Send" IsEnabled="{Binding Path=MessageViewModel.IsValid}"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
         <GridSplitter Grid.Row="1"></GridSplitter>
         <TabControl Grid.Row="2">
             <TabItem Header="Sendt">
                 <StackPanel>
-                    <DataGrid >
+                    <DataGrid ItemsSource="{Binding Path=SentMessages}" IsReadOnly="True" AutoGenerateColumns="False">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Mottaker" Binding="{Binding Receiver.Name}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Orgnr" Binding="{Binding Receiver.Id}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Meldingsid" Binding="{Binding MessageId}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Forsendelsesid" Binding="{Binding ConversationId}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Mottaker" Binding="{Binding Path=MessageViewModel.Receiver.Name}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Orgnr" Binding="{Binding MessageViewModel.Receiver.Id}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Meldingsid" Binding="{Binding Path=MessageViewModel.MessageId}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Forsendelsesid" Binding="{Binding MessageViewModel.ConversationId}"></DataGridTextColumn>
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Mottatt">
+            <!--<TabItem Header="Mottatt">
                 <StackPanel>
                     <DataGrid ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor},  Path=ReceivedMessages}" IsReadOnly="True" AutoGenerateColumns="False">
                         <DataGrid.Columns>
@@ -65,17 +65,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>
-            </TabItem>
-            <TabItem Header="Sendt">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <RadioButton GroupName="statusfilter" Content="Alle"></RadioButton>
-                        <RadioButton GroupName="statusfilter" Content="Sendt"></RadioButton>
-                        <RadioButton GroupName="statusfilter" Content="Mottatt"></RadioButton>
-                    </StackPanel>
-                    <DataGrid ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor},  Path=Statuses}"/>
-                </StackPanel>
-            </TabItem>
+            </TabItem>-->
         </TabControl>
     </Grid>
 </Window>

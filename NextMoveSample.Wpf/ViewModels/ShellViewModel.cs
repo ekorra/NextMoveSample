@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Net.Http;
@@ -26,15 +27,16 @@ namespace NextMoveSample.Wpf.ViewModels
                 if (Equals(value, messageViewModel)) return;
                 messageViewModel = value;
                 NotifyOfPropertyChange(() => MessageViewModel);
-
-                
             }
         }
+
+        public BindableCollection<SentMessageViewModel> SentMessages { get; set; }
 
         public ShellViewModel()
         {
             this.eventAggregator = new EventAggregator();
             nextMoveClient = new NextMoveClient(new HttpClient());
+            SentMessages = new BindableCollection<SentMessageViewModel>();
             InitContext();
         }
 
@@ -73,13 +75,19 @@ namespace NextMoveSample.Wpf.ViewModels
 
         public bool CanSend => (MessageViewModel.IsValid);
 
+
         public async Task Send()
         {
             SetWorkingState(true);
             try
             {
-                await nextMoveClient.SendMessage(MessageViewModel.GetEnvelopeInfo(), ActiveItem.GetBusinessMessage(),
+                var result = await nextMoveClient.SendMessage(MessageViewModel.GetEnvelopeInfo(), ActiveItem.GetBusinessMessage(),
                     MessageViewModel.PayloadInfo);
+                if (result)
+                {
+                    SentMessages.Add(new SentMessageViewModel(MessageViewModel, ActiveItem));
+                    Reset();
+                }
             }
             catch (Exception e)
             {
@@ -106,8 +114,6 @@ namespace NextMoveSample.Wpf.ViewModels
                     ActiveItem = new BusinessMessageDpoViewModel(eventAggregator);
                     break;
             }
-            
-            
         }
 
         public bool IsEnabled
