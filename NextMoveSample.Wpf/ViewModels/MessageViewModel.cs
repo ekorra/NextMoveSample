@@ -7,11 +7,12 @@ using System.Linq;
 using System.Text;
 using Caliburn.Micro;
 using NextMove.Lib;
+using NextMoveSample.Wpf.ValidationHandler.Attributes;
 
 
 namespace NextMoveSample.Wpf.ViewModels
 {
-    public class MessageViewModel : PropertyChangedBase
+    public class MessageViewModel : ValidationViewModel
     {
         private readonly NextMoveClient nextMoveClient;
         private readonly IEventAggregator eventAggregator;
@@ -24,7 +25,7 @@ namespace NextMoveSample.Wpf.ViewModels
         private DocumentViewModel selectedDocument;
 
 
-        public MessageViewModel(NextMoveClient nextMoveClient, IEventAggregator eventAggregator)
+        public MessageViewModel(NextMoveClient nextMoveClient, IEventAggregator eventAggregator):base(nameof(MessageViewModel))
         {
             this.nextMoveClient = nextMoveClient;
             this.eventAggregator = eventAggregator;
@@ -62,7 +63,7 @@ namespace NextMoveSample.Wpf.ViewModels
             }
         }
 
-        [Required]
+        [Required(ErrorMessage = "h")]
         public string ConversationId
         {
             get => conversationId;
@@ -75,6 +76,7 @@ namespace NextMoveSample.Wpf.ViewModels
         }
 
         [Required (ErrorMessage = "MessageId is required")]
+        [GuidValidation]
         public string MessageId
         {
             get => messageId;
@@ -149,7 +151,9 @@ namespace NextMoveSample.Wpf.ViewModels
             return PayloadInfo != null && PayloadInfo.Any();
         }
 
-        public bool IsValid => Sender.IsValid && Receiver.IsValid && SelectedProcess != null && HasPayload();
+        //public bool IsValid => Sender.IsValid && Receiver.IsValid && SelectedProcess != null && HasPayload();
+
+         
 
         public EnvelopeInfo GetEnvelopeInfo()
         {

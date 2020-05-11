@@ -9,6 +9,9 @@
         mc:Ignorable="d"
         Title="ShellView" Height="450" Width="800"
         xmlns:uc="clr-namespace:NextMoveSample.Wpf.UserControls">
+    <Window.Resources>
+
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="300"/>

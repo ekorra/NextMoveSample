@@ -4,8 +4,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NextMoveSample.Wpf.UserControls"
-             mc:Ignorable="d" d:DesignWidth="400" Height="150"
-             >
+             mc:Ignorable="d" d:DesignWidth="400" Height="150">
+
+    <UserControl.Resources>
+        <!--<Style TargetType="{x:Type TextBox}">
+            <Setter Property="Margin"
+                    Value="4" />
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError"
+                         Value="true">
+                    <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>-->
+    </UserControl.Resources>
     <Grid>
         <StackPanel>
             <StackPanel.Resources>
@@ -46,11 +59,11 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="ConvesationId" Style="{StaticResource HeaderStyle}"></Label>
-                <TextBox Text="{Binding Path=MessageViewModel.ConversationId}" Style="{StaticResource IdStyle}"></TextBox>
+                <TextBox Text="{Binding Path=MessageViewModel.ConversationId, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Style="{StaticResource IdStyle}"></TextBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="MessageId" Style="{StaticResource HeaderStyle}"></Label>
-                <TextBox Text="{Binding Path=MessageViewModel.MessageId}" Style="{StaticResource IdStyle}"></TextBox>
+                <TextBox Text="{Binding Path=MessageViewModel.MessageId, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" Style="{StaticResource IdStyle}"></TextBox>
             </StackPanel>
         </StackPanel>
     </Grid>
