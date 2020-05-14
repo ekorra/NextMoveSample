@@ -16,8 +16,9 @@ namespace NextMoveSample.Wpf.ViewModels
     {
         private readonly IEventAggregator eventAggregator;
         private MessageViewModel messageViewModel;
-        private readonly NextMoveClient nextMoveClient;
+        private readonly INextMoveClient nextMoveClient;
         private bool isEnabled;
+        private const string MessageStoragePath = @"C:\temp\efmormidling\mottak\";
 
         public MessageViewModel MessageViewModel
         {
@@ -31,6 +32,8 @@ namespace NextMoveSample.Wpf.ViewModels
         }
 
         public BindableCollection<SentMessageViewModel> SentMessages { get; set; }
+        public BindableCollection<ReceivedMessagesViewModel> ReceivedMessages { get; set; }
+
 
         public ShellViewModel()
         {
@@ -125,6 +128,29 @@ namespace NextMoveSample.Wpf.ViewModels
                 isEnabled = value;
                 NotifyOfPropertyChange(() => IsEnabled);
             }
+        }
+
+        public async Task GetIncomingMessages()
+        {
+            do
+            {
+                try
+                {
+                    var message = await nextMoveClient.GetMessage(MessageTypes.ALL, new DirectoryInfo(MessageStoragePath));
+                    if (message == null)
+                    {
+                        break;
+                    }
+                    ReceivedMessages.Add(new ReceivedMessagesViewModel(message, MessageStoragePath, nextMoveClient, eventAggregator));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+               
+
+            } while (true);
         }
 
 

@@ -7,7 +7,7 @@
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:local="clr-namespace:NextMoveSample.Wpf.Views"
         mc:Ignorable="d"
-        Title="ShellView" Height="450" Width="800"
+        Title="ShellView" Height="500" Width="800"
         xmlns:uc="clr-namespace:NextMoveSample.Wpf.UserControls">
     <Window.Resources>
 
@@ -57,18 +57,19 @@
                     </DataGrid>
                 </StackPanel>
             </TabItem>
-            <!--<TabItem Header="Mottatt">
+            <TabItem Header="Mottatt">
                 <StackPanel>
-                    <DataGrid ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor},  Path=ReceivedMessages}" IsReadOnly="True" AutoGenerateColumns="False">
+                    <DataGrid ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor},  Path=ReceivedMessages}" IsReadOnly="True" AutoGenerateColumns="False" Height="100">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Sender" Binding="{Binding Sender.Name}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Orgnr" Binding="{Binding Sender.Id}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Meldingsid" Binding="{Binding MessageId}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Forsendelsesid" Binding="{Binding ConversationId}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Sender" Binding="{Binding Path=MessageViewModel.Sender.Name}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Orgnr" Binding="{Binding MessageViewModel.Sender.Id}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Meldingsid" Binding="{Binding MessageViewModel.MessageId}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Forsendelsesid" Binding="{Binding MessageViewModel.ConversationId}"></DataGridTextColumn>
                         </DataGrid.Columns>
                     </DataGrid>
+                    <Button Content="Hent nye mMeldinger" cal:Message.Attach="GetIncomingMessages()"/>
                 </StackPanel>
-            </TabItem>-->
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>

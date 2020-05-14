@@ -16,6 +16,14 @@ namespace NextMoveSample.Wpf.ViewModels
             
         }
 
+        public BusinessMessageDpaViewModel(DpaBusinessMessage dpaBusiness, IEventAggregator eventAggregator) : base(eventAggregator)
+        {
+            PrimaryDocument = dpaBusiness.PrimaryDocumentName;
+            Identifier = dpaBusiness.identifier;
+            SelectedSecurityLevel = dpaBusiness.SecurityLevel;
+            Content = dpaBusiness.content;
+        }
+
         public override BusinessMessageCore GetBusinessMessage()
         {
             return new DpaBusinessMessage()

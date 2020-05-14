@@ -10,7 +10,7 @@ namespace NextMoveSample.Wpf.ViewModels
 {
     public class ParticipantViewModel: PropertyChangedBase
     {
-        private readonly NextMoveClient nextMoveClient;
+        private readonly INextMoveClient nextMoveClient;
         private string id;
         private string name;
         private BindableCollection<ProcessViewModel> supportedProcesses;
@@ -50,7 +50,7 @@ namespace NextMoveSample.Wpf.ViewModels
 
         public bool IsReceiver { get; }
 
-        public ParticipantViewModel(bool isReceiver, NextMoveClient nextMoveClient)
+        public ParticipantViewModel(bool isReceiver, INextMoveClient nextMoveClient)
         {
             IsReceiver = isReceiver;
             this.nextMoveClient = nextMoveClient;

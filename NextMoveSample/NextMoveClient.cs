@@ -13,7 +13,7 @@ using Newtonsoft.Json.Linq;
 
 namespace NextMove.Lib
 {
-    public class NextMoveClient
+    public class NextMoveClient : INextMoveClient
     {
         private readonly HttpClient httpClient;
 
@@ -162,7 +162,12 @@ namespace NextMove.Lib
             return message;
         }
 
-        public async Task<StandardBusinessDocument> PeekMessage(MessageTypes messageType)
+        public Task<string> GetStatus(string messageId)
+        {
+            throw new NotImplementedException();
+        }
+
+        private async Task<StandardBusinessDocument> PeekMessage(MessageTypes messageType)
         {
             var httpResponseMessage = await httpClient.GetAsync(messageType==MessageTypes.ALL?"/api/messages/in/peek": $"/api/messages/in/peek?serviceIdentifier={messageType.ToString()}");
             if (!httpResponseMessage.IsSuccessStatusCode)
@@ -179,7 +184,7 @@ namespace NextMove.Lib
                     .ReadAsStringAsync());
         }
 
-        public async Task<Stream> GetPayload(string messageId)
+        private async Task<Stream> GetPayload(string messageId)
         {
             if(string.IsNullOrEmpty(messageId)) { throw new ArgumentException(nameof(messageId)) ;}
 
@@ -189,7 +194,7 @@ namespace NextMove.Lib
             return await httpResponseMessage.Content.ReadAsStreamAsync();
         }
 
-        public async Task DeleteMessage(string messageId)
+        private async Task DeleteMessage(string messageId)
         {
             if (string.IsNullOrEmpty(messageId)) { throw new ArgumentException(nameof(messageId)); }
 

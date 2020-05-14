@@ -14,7 +14,7 @@ namespace NextMoveSample.Wpf.ViewModels
 {
     public class MessageViewModel : ValidationViewModel
     {
-        private readonly NextMoveClient nextMoveClient;
+        private readonly INextMoveClient nextMoveClient;
         private readonly IEventAggregator eventAggregator;
         private ParticipantViewModel sender;
         private ParticipantViewModel receiver;
@@ -25,7 +25,7 @@ namespace NextMoveSample.Wpf.ViewModels
         private DocumentViewModel selectedDocument;
 
 
-        public MessageViewModel(NextMoveClient nextMoveClient, IEventAggregator eventAggregator):base(nameof(MessageViewModel))
+        public MessageViewModel(INextMoveClient nextMoveClient, IEventAggregator eventAggregator):base(nameof(MessageViewModel))
         {
             this.nextMoveClient = nextMoveClient;
             this.eventAggregator = eventAggregator;
@@ -37,6 +37,38 @@ namespace NextMoveSample.Wpf.ViewModels
             SelectedDocument = new DocumentViewModel
                 {Id = @"urn:no:difi:arkivmelding:xsd::arkivmelding", Name = "Arkivmelding"};
 
+        }
+
+        public MessageViewModel(StandardBusinessDocumentHeader standardBusinessDocumentHeader, INextMoveClient nextMoveClient, IEventAggregator eventAggregator) : base(nameof(MessageViewModel))
+        {
+            this.nextMoveClient = nextMoveClient;
+            this.eventAggregator = eventAggregator;
+            Sender = new ParticipantViewModel(false, nextMoveClient)
+            {
+                Id = standardBusinessDocumentHeader.Sender[0].Identifier.Value
+            };
+            Receiver = new ParticipantViewModel(true, nextMoveClient)
+            {
+                Id = standardBusinessDocumentHeader.Receiver[0].Identifier.Value
+            };
+            MessageId = standardBusinessDocumentHeader.DocumentIdentification.InstanceIdentifier;
+            var conversation = standardBusinessDocumentHeader.BusinessScope.Scope
+                .FirstOrDefault(s => s.Type.Equals("ConversationId"));
+            if (conversation != null)
+            {
+                ConversationId = conversation.InstanceIdentifier;
+                SelectedProcess = new ProcessViewModel(conversation.Identifier);
+            }
+            else
+            {
+                throw new Exception("Conversation not found");
+            }
+
+            SelectedDocument = new DocumentViewModel
+            {
+                Id = standardBusinessDocumentHeader.DocumentIdentification.Standard
+            };
+            MessageId = standardBusinessDocumentHeader.DocumentIdentification.InstanceIdentifier;
         }
 
         public ParticipantViewModel Sender

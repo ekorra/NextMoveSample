@@ -12,9 +12,11 @@ namespace NextMove.Lib
 {
     public partial class StandardBusinessDocument
     {
+        public BusinessMessageCore BusinessMessageCore { get; private set; }
 
         public StandardBusinessDocument(EnvelopeInfo envelopeInfo, BusinessMessageCore businessMessageCore)
         {
+            BusinessMessageCore = businessMessageCore;
             StandardBusinessDocumentHeader = GetStandardBusinessDocumentHeader(envelopeInfo);
             Any = SerializeToXmlElement(businessMessageCore);
         }
@@ -35,8 +37,13 @@ namespace NextMove.Lib
             //arkivmelding is not deserialized to the correct type correctly
             if(additionalData.ContainsKey("arkivmelding"))
             {
-               
+                BusinessMessageCore = additionalData["avtalt"].ToObject<DpoBusinessMessage>();
                 Any = SerializeToXmlElement(additionalData["arkivmelding"].ToObject<DpoBusinessMessage>());
+            }
+            else if(additionalData.ContainsKey("avtalt"))
+            {
+                BusinessMessageCore = additionalData["avtalt"].ToObject<DpaBusinessMessage>();
+                Any = SerializeToXmlElement(additionalData["avtalt"].ToObject<DpaBusinessMessage>());
             }
         }
 
