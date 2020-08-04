@@ -44,15 +44,13 @@ namespace NextMoveSample.Wpf.ViewModels
             this.MessageViewModel = new MessageViewModel(standardBusinessDocument.StandardBusinessDocumentHeader, this.nextMoveClient , this.eventAggregator);
             switch (standardBusinessDocument.BusinessMessageCore)
             {
-                case DpaBusinessMessage businessMessage:
-                    BusinessMessageViewModel = new BusinessMessageDpaViewModel(businessMessage, null);
+                case DpaBusinessMessage businessMessage1:
+                    BusinessMessageViewModel = new BusinessMessageDpaViewModel(businessMessage1, eventAggregator);
                     break;
-                
-                case DpoBusinessMessage businessMessage:
-                    BusinessMessageViewModel = new BusinessMessageDpoViewModel(businessMessage, null);
+                case DpoBusinessMessage businessMessage2:
+                    BusinessMessageViewModel = new BusinessMessageDpoViewModel(businessMessage2, eventAggregator);
                     break;
             }
-            
         }
     }
 }

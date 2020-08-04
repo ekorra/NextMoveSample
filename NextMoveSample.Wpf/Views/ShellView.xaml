@@ -59,7 +59,7 @@
             </TabItem>
             <TabItem Header="Mottatt">
                 <StackPanel>
-                    <DataGrid ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor},  Path=ReceivedMessages}" IsReadOnly="True" AutoGenerateColumns="False" Height="100">
+                    <DataGrid ItemsSource="{Binding Path=ReceivedMessages}" IsReadOnly="True" AutoGenerateColumns="False" Height="100">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Sender" Binding="{Binding Path=MessageViewModel.Sender.Name}"></DataGridTextColumn>
                             <DataGridTextColumn Header="Orgnr" Binding="{Binding MessageViewModel.Sender.Id}"></DataGridTextColumn>

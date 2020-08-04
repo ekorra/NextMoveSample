@@ -134,26 +134,29 @@ namespace NextMove.Lib
             var messageId = message.StandardBusinessDocumentHeader.DocumentIdentification.InstanceIdentifier;
             var payload = await GetPayload(messageId);
 
-            if (!storagePath.Exists)
+            if (payload != null)
             {
-                storagePath.Create();
-            }
-
-            storagePath.CreateSubdirectory(messageId);
-
-
-            try
-            {
-                using (var fileStream = File.Create($@"{storagePath}\{messageId}\asic.zip"))
+                if (!storagePath.Exists)
                 {
-                    payload.Seek(0, SeekOrigin.Begin);
-                    payload.CopyTo(fileStream);
+                    storagePath.Create();
                 }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
+
+                storagePath.CreateSubdirectory(messageId);
+
+
+                try
+                {
+                    using (var fileStream = File.Create($@"{storagePath}\{messageId}\asic.zip"))
+                    {
+                        payload.Seek(0, SeekOrigin.Begin);
+                        payload.CopyTo(fileStream);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
             }
             
 
@@ -180,6 +183,7 @@ namespace NextMove.Lib
                 return null;
             }
 
+            var m = await httpResponseMessage.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<StandardBusinessDocument>(await httpResponseMessage.Content
                     .ReadAsStringAsync());
         }
@@ -189,7 +193,7 @@ namespace NextMove.Lib
             if(string.IsNullOrEmpty(messageId)) { throw new ArgumentException(nameof(messageId)) ;}
 
             var httpResponseMessage = await httpClient.GetAsync($"/api/messages/in/pop/{messageId}");
-            if (!httpResponseMessage.IsSuccessStatusCode) { throw new Exception("Payload feilet");}
+            if (!httpResponseMessage.IsSuccessStatusCode) { return null;}
 
             return await httpResponseMessage.Content.ReadAsStreamAsync();
         }

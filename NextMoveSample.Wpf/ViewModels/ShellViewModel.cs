@@ -40,6 +40,7 @@ namespace NextMoveSample.Wpf.ViewModels
             this.eventAggregator = new EventAggregator();
             nextMoveClient = new NextMoveClient(new HttpClient());
             SentMessages = new BindableCollection<SentMessageViewModel>();
+            ReceivedMessages = new BindableCollection<ReceivedMessagesViewModel>();
             InitContext();
         }
 
@@ -84,7 +85,8 @@ namespace NextMoveSample.Wpf.ViewModels
             SetWorkingState(true);
             try
             {
-                var result = await nextMoveClient.SendMessage(MessageViewModel.GetEnvelopeInfo(), ActiveItem.GetBusinessMessage(),
+                var bm = ActiveItem.GetBusinessMessage();
+                var result = await nextMoveClient.SendMessage(MessageViewModel.GetEnvelopeInfo(), bm,
                     MessageViewModel.PayloadInfo);
                 if (result)
                 {

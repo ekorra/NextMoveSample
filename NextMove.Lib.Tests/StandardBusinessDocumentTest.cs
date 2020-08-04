@@ -30,8 +30,7 @@ namespace NextMove.Lib.Tests
                 var result = sbd.ToJson();
                 var jObject = JObject.Parse(sbd.ToJson());
                 var avtalt = jObject["avtalt"];
-                //var c = JObject.Parse( (string)jObject["avtalt"]["content"]);
-                
+
 
                 Assert.True(avtalt.HasValues);
             }

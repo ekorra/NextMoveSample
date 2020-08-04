@@ -10,19 +10,19 @@
         <StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label>Sikkerhetsnivå</Label>
-            <ComboBox ItemsSource="{Binding Path=SecurityLevels}" SelectedValue="{Binding Path=MessageViewModel.SelectedSecurityLevel}"/>
+            <ComboBox ItemsSource="{Binding Path=SecurityLevels}" SelectedValue="{Binding Path=SelectedSecurityLevel}"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label Content="Primarydocument:"/>
-            <TextBox  Text="{Binding Path=MessageViewModel.PrimaryDocument}"/>
+            <TextBox  Text="{Binding Path=PrimaryDocument}"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Label Content="Identifier:"/>
-            <TextBox Text="{Binding Path=MessageViewModel.Identifier}"/>
+            <TextBox Text="{Binding Path=Identifier}"/>
         </StackPanel>
         <StackPanel>
             <Label Content="Freestyle JSON"></Label>
-            <TextBox AllowDrop="False" VerticalScrollBarVisibility="Visible" TextWrapping="Wrap" AcceptsReturn="True" Height="150" Text="{Binding Path=MessageViewModel.Content}"/>
+            <TextBox AllowDrop="False" VerticalScrollBarVisibility="Visible" TextWrapping="Wrap" AcceptsReturn="True" Height="150" Text="{Binding Path=Content}"/>
         </StackPanel>
         </StackPanel>
 
